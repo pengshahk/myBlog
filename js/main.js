@@ -78,7 +78,7 @@ $(document).ready(function(){
         var shortName = "ycps";
         var threads = "{{ site.url }}{{ page.id }}";
 
-        var jsonUrl = "http://api.duoshuo.com/threads/counts.jsonp?short_name=" + shortName + "&threads=" + threads +  "&callback=?";
+        var jsonUrl = "https://api.duoshuo.com/threads/counts.jsonp?short_name=" + shortName + "&threads=" + threads +  "&callback=?";
         $.getJSON(jsonUrl, function(result) {
             var value='',likes='';
             $.each(result.response, function(i, field) {
@@ -94,33 +94,26 @@ $(document).ready(function(){
 
 
     //------------------------------侧边栏外观颜色变化----------------------//
-    $('li.cell').on('mouseenter mouseleave',function(event){
+    /*$('li.cell').on('mouseenter mouseleave',function(event){
         if(event.type=='mouseenter'){
             $(this).find('div.per-first').stop().css('color','#ff69b4');
         }else{
             $(this).find('div.per-first').stop().css('color','#777');
         }
+    });*/
+    $('li.cell').on('mouseenter mouseleave',function(event){
+        if(event.type=='mouseenter'){
+            $(this).find('div.per-first').stop().animate({
+                color: '#ff69b4'
+            },400);
+        }else{
+            $(this).find('div.per-first').stop().animate({
+                color: '#777'
+            },400);
+        }
     });
 
     //------------------------------分页区的颜色变化----------------------//
-     /*$('div.fenye  a:not(.active)').hover(function(){
-     $(this).toggleClass('active');
-     });
-     $('div.fenye  a').click(function () {
-     $('.active').removeClass('active');
-     $(this).addClass('active');
-     });*/
-
-    /*$('div.fenye').on('mouseenter mouseleave','div.link',function(event){
-        if(!$(this).parent().hasClass("active")){
-            if(event.type=='mouseenter'){
-                $(this).stop().css('backgroundColor','hotpink');
-            }
-            else {
-                $(this).stop().css('backgroundColor','#777');
-            }
-        }
-     });*/
     $('div.fenye').on('mouseenter mouseleave','div.link',function(event){
         if(!$(this).parent().hasClass("active")){
             if (event.type == 'mouseenter') {

@@ -160,6 +160,8 @@ $(document).ready(function(){
                     html+=' <li class="time"><a href="#"><span class="icon fa fa-clock-o"></span>'+json[i]["a"][j][3]+'</a></li></ul></div></div></div>';
                 }
                 if(num<=spaceNum){
+                    link="";
+                    $('div.fenye').html(link);
                 }else{
                     if(clicked==false){
                         if( left<spaceNum){

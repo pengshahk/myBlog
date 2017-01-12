@@ -7494,11 +7494,12 @@ body {
 .blog-order .cd-timeline-block .cd-timeline-content > h2 > a {
   font-size: 25px;
   color: #777;
-  font-weight: bold;
+  text-shadow: 1px 0 0 #6a6a6a;
 }
 .blog-order .cd-timeline-block .cd-timeline-content > h2 > a:hover,
 .blog-order .cd-timeline-block .cd-timeline-content > h2 > a:active {
   text-decoration: none;
+  text-shadow: none;
   color: hotpink;
 }
 .blog-order .cd-timeline-block .cd-timeline-content .tags {

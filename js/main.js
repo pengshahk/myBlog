@@ -1,14 +1,5 @@
 $(document).ready(function(){
     //------------------------------实现博客标题的颜色渐变效果----------------------//
-    $('h2.title').hover(function(){
-        $(this).stop().animate({
-            color: "#ff69b4"
-        },400);
-    },function(){
-        $(this).stop().animate({
-            color: "#777"
-        },700);
-    });
     $('div.cd-timeline-content > h2.title').on('mouseenter mouseleave',function(event){
         if (event.type == 'mouseenter') {
             $(this).children().stop().animate({

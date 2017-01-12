@@ -79,7 +79,7 @@
                         {% for page in (1..paginator.total_pages) %}
                         {% if page == paginator.page %}
                         {% if page == 1 %}
-                        <a href="{{ 'index.html' | replace: '//', '/' }}" class="active">
+                        <a href="{{site.production_url}}/myBlog/{{ 'index.html' }}" class="active">
                             <div class="link fenye-a home">{{ page }}</div>
                         </a>
                         {% else %}
@@ -88,7 +88,7 @@
                         </a>
                         {% endif %}
                         {% elsif page == 1 %}
-                        <a href="{{ 'index.html'| replace: '//', '/' }}">
+                        <a href="{{site.production_url}}/myBlog/{{ 'index.html'| replace: '//', '/' }}">
                             <div class="link fenye-a">{{ page }}</div>
                         </a>
                         {% else %}

@@ -1,0 +1,127 @@
+    <title>彭莎的博客</title>
+    {% if page.description %}<meta name="description" content="{{page.description}}">{% endif %}
+    <meta name="author" content="{{ site.author.name }}">
+
+    <!-- Enable responsive viewport -->
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!-- Fav and touch icons -->
+    <link rel="shortcut icon" href="../../../../../assets/favicon.ico">
+
+    <!--<link rel="stylesheet" href="css/main.css">-->
+    <link rel="stylesheet" href="../../../../../css/post.css">
+
+    <!-- code custome -->
+    <link rel="stylesheet" href="../../../../../css/codeStyles/atom-one-dark.css">
+    <script src="http://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.9.0/highlight.min.js"></script>
+    <script type="text/javascript">
+        hljs.initHighlightingOnLoad();
+    </script>
+
+    <!-- Modernizr -->
+    <script src="../../../../../js/vendor/modernizr-2.8.3.min.js"></script>
+    <!-- Respond.js for IE 8 or less only -->
+    <!--[if (lt IE 9) & (!IEMobile)]>
+    <script src="../../../../../js/vendor/respond.min.js"></script>
+    <![endif]-->
+
+    <!-- atom & rss feed -->
+  <!--  <link href="{{ BASE_PATH }}{{ site.JB.atom_path }}" type="application/atom+xml" rel="alternate" title="Sitewide ATOM Feed">
+    <link href="{{ BASE_PATH }}{{ site.JB.rss_path }}" type="application/rss+xml" rel="alternate" title="Sitewide RSS Feed"-->>
+
+</head>
+<body>
+<!--[if lt IE 8]>
+<p class="browserupgrade">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
+<![endif]-->
+<header role="banner">
+    <nav role="navigation" class="navbar navbar-static-top navbar-default">
+        <div class="container-fluid">
+            <!-- <div class="row">-->
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" href="index.html"><img src="../../../../../assets/logo.png" alt="彭莎" width="180"></a>
+            </div>
+        </div>
+        <div class="col-lg-9 right">
+            <div class="navbar-collapse collapse">
+                <ul class="nav navbar-nav navbar-right">
+                    <li class="active"><a href="../../../../../index.html"  onmouseover="$(this).tooltip('show')"  data-toggle="tooltip" data-placement="bottom" title="Home"><i class="icon fa fa-home"></i><span> 首页</span></a></li>
+                    <li ><a href="../../../../../me.html"  onmouseover="$(this).tooltip('show')" data-toggle="tooltip" data-placement="bottom" title="About"><i class="icon fa fa-user"></i> <span> 关于我 </span></a></li>
+                    <li ><a href="../../../../../shuo.html"  onmouseover="$(this).tooltip('show')" data-toggle="tooltip" data-placement="bottom" title="Gossip"><i class="icon fa fa-pencil"></i> <span> 闲言碎语 </span></a></li>
+                    <li><a href="../../../../../footprint.html"  onmouseover="$(this).tooltip('show')" data-toggle="tooltip" data-placement="bottom" title="Footprint"><i class="icon fa fa-plane"></i> <span> 足迹 </span></a></li>
+                    <li><a href="#"  onmouseover="$(this).tooltip('show')" data-toggle="tooltip" data-placement="bottom" title="Search"><i class="icon fa fa-search"></i> <span> 搜索 </span></a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="col-lg-1">
+
+        </div>
+        </div>
+        <!--</div>-->
+    </nav>
+</header>
+<main class="post-contents">
+    <div class="container-fluid">
+        <div class="col-lg-2 col-md-2 col-sm-1">
+        </div>
+        <div class="col-lg-8 col-md-8 col-sm-10">
+            <div class="post-content">
+                <div class="post-header">
+                    <h1>{{page.title}}</h1>
+                </div>
+                <div class="content">
+                   {{content}}
+                </div>
+            </div>
+            <div class="post-part2">
+                <!-- 多说评论框 start -->
+                <div class="ds-thread" data-thread-key="{{ site.url }}{{ page.id }}" data-title="{{ page.title }}" data-url="{{site.url}}{{page.id}}"></div>
+                <!-- 多说评论框 end -->
+                <!-- 多说公共JS代码 start (一个网页只需插入一次) -->
+                <script type="text/javascript">
+                    var duoshuoQuery = {short_name:"ycps"};
+                    (function() {
+                        var ds = document.createElement('script');
+                        ds.type = 'text/javascript';ds.async = true;
+                        ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+                        ds.charset = 'UTF-8';
+                        (document.getElementsByTagName('head')[0]
+                        || document.getElementsByTagName('body')[0]).appendChild(ds);
+                    })();
+                </script>
+                <!-- 多说公共JS代码 end -->
+            </div>
+
+            <div class="col-lg-2 col-md-2 col-sm-1">
+            </div>
+        </div>
+    </div>
+</main>
+<footer role="contentinfo">
+    <div class="row">
+        <ul class="social">
+            <li><a href="http://weibo.com/u/2488284837?refer_flag=1001030101_&is_all=1"><span class="icon fa fa-weibo"></span> 微博</a> </li>
+            <li>© 2016 <span>❤</span> 彭莎</li>
+            <li><a href="https://github.com/pengshahk"><span class="icon fa fa-github"></span> GitHub</a></li>
+        </ul>
+    </div>
+</footer>
+<script src="../../../../../js/vendor/jquery-1.12.0.min.js"></script>
+<script src="../../../../../js/plugins.js"></script>
+<script src="../../../../../js/color-animation.js"></script>
+<script src="../../../../../js/post.js"></script>
+<div class="search-tool">
+    <input type="text" class="form-control search-content" id="search-content" placeholder="文章标题 日期 标签" >
+    <div class="close">
+        <span class="icon fa fa-times-circle-o"></span>
+    </div>
+</div>
+<script src="../../../../../js/bootstrap3-typeahead.min.js"></script>
+<script src="../../../../../js/post-search.js"></script>
+</body>
+

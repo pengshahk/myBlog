@@ -1,0 +1,125 @@
+body{
+  //background: url("../assets/bg.jpg") center center no-repeat fixed;
+  background-size:cover;
+  -moz-box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+  -o-box-sizing:border-box;
+  -ms-box-sizing:border-box;
+  box-sizing: border-box;
+}
+  .shuo {
+    font-family: Tahoma, Helvetica, Arial, "\5b8b\4f53", sans-serif;
+    margin-top:50px;
+    color: #777;
+    font-size: 18px;
+    list-style: none;
+    & > li{
+      list-style: none;
+     float:left;
+      width:300px;
+      height: 300px;
+      margin:20px 0px 50px 60px;
+      .bg {
+        position: relative;
+        left: 14%;
+        opacity: 0.4;
+      }
+      .content_body {
+        border-radius: 8px;
+        //background-color: hotpink;
+        .content {
+          width: 300px;
+          height: 200px;
+          border-radius: 8px;
+          padding: 15px;
+          display: none;
+          box-shadow: 2px 2px 10px gray;
+          text-indent: 2em;
+          //background-color: lightgray;
+        }
+        .time {
+          width: 300px;
+          height: 200px;
+          display: block;
+          p {
+            position: relative;
+            top: 15%;
+            left: 60%;
+          }
+          .clock {
+            position: relative;
+            top: 50%;
+            left: 5%;
+            font-size: 16px;
+            font-style: italic;
+            font-weight: normal;
+          }
+        }
+      }
+    }
+}
+
+    .shuo1{
+      .content_body {
+        background-color: rgb(237, 241, 245);
+      }
+    }
+    .shuo2{
+      //padding-top: 50px;
+      .content_body{
+        background-color: rgb(255,255,168);
+      }
+    }
+    .shuo3{
+      //padding-top: 50px;
+      .content_body{
+        background-color: rgb(204,188,203);
+      }
+    }
+    .shuo4{
+      //padding-top: 50px;
+      .content_body{
+        background-color: rgb(237,241,245);
+      }
+    }
+    .shuo5{
+      .content_body{
+        background-color: rgb(255,255,168);
+      }
+    }
+#list1{
+  .shuo1{
+    .content_body {
+      .time {
+        background: url("../assets/liuliju.jpg");
+        border-radius: 8px;
+      }
+    }
+  }
+  .shuo2{
+    .content_body{
+      .time{
+        background: url("../assets/fengxinzi.jpg");
+        border-radius: 8px;
+      }
+    }
+  }
+  .shuo3{
+    .content_body{
+      .time{
+        background: url("../assets/baihe.jpg");
+        border-radius: 8px;
+      }
+    }
+  }
+  .shuo4{
+    .content_body{
+      .time{
+        background: url("../assets/xiuqiuhua.jpg");
+        border-radius: 8px;
+      }
+    }
+  }
+}
+
+

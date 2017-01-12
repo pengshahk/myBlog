@@ -1,0 +1,197 @@
+    <title>彭莎的博客</title>
+    {% if page.description %}<meta name="description" content="{{ page.description }}">{% endif %}
+    <meta name="author" content="{{ site.author.name }}">
+
+    <!-- Enable responsive viewport -->
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!-- Fav and touch icons -->
+    <link rel="shortcut icon" href="{{site.production_url}}/myBlog/assets/favicon.ico">
+
+    <!--<link rel="stylesheet" href="css/main.css">-->
+    <link rel="stylesheet" href="{{site.production_url}}/myBlog/css/main.css">
+    <script src="{{site.production_url}}/myBlog/js/vendor/modernizr-2.8.3.min.js"></script>
+    <!-- Respond.js for IE 8 or less only -->
+    <!--[if (lt IE 9) & (!IEMobile)]>
+    <script src="{{site.production_url}}/myBlog/js/vendor/respond.min.js"></script>
+    <![endif]-->
+</head>
+<body>
+<!--[if lt IE 8]>
+<p class="browserupgrade">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
+<![endif]-->
+
+
+<header role="banner">
+    <nav role="navigation" class="navbar navbar-static-top navbar-default">
+        <div class="container-fluid">
+            <!-- <div class="row">-->
+            <div class="col-lg-1">
+            </div>
+            <div class="col-lg-1">
+                <div class="navbar-header">
+                    <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </button>
+                    <a class="navbar-brand" href="http://pengshahk.github.io/myBlog/index.html"><img src="{{site.production_url}}/myBlog/assets/logo.png" alt="彭莎" width="180"></a>
+                </div>
+            </div>
+            <div class="col-lg-9 right">
+                <div class="navbar-collapse collapse">
+                    <ul class="nav navbar-nav navbar-right">
+                        <li class="active"><a href="http://pengshahk.github.io/myBlog/index.html"  onmouseover="$(this).tooltip('show')"  data-toggle="tooltip" data-placement="bottom" title="Home"><i class="icon fa fa-home"></i><span> 首页</span></a></li>
+                        <li><a href="http://pengshahk.github.io/myBlog/me.html"  onmouseover="$(this).tooltip('show')" data-toggle="tooltip" data-placement="bottom" title="About"><i class="icon fa fa-user"></i> <span> 关于我 </span></a></li>
+                        <li><a href="http://pengshahk.github.io/myBlog/shuo.html"  onmouseover="$(this).tooltip('show')" data-toggle="tooltip" data-placement="bottom" title="Gossip"><i class="icon fa fa-pencil"></i> <span> 闲言碎语 </span></a></li>
+                        <li><a href="http://pengshahk.github.io/myBlog/footprint.html"  onmouseover="$(this).tooltip('show')" data-toggle="tooltip" data-placement="bottom" title="Footprint"><i class="icon fa fa-plane"></i> <span> 足迹 </span></a></li>
+                        <li><a href="#"  onmouseover="$(this).tooltip('show')" data-toggle="tooltip" data-placement="bottom" title="Search"><i class="icon fa fa-search"></i> <span> 搜索 </span></a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="col-lg-1"></div>
+        </div>
+        <!--</div>-->
+    </nav>
+</header>
+<main>
+    <div class="banner">
+        <section class="box">
+            <ul class="texts">
+                <p>再 美 好 也 经 不 住 遗 忘</p>
+                <p>再 悲 伤 也 抵 不 过 时 光</p>
+            </ul>
+        </section>
+    </div>
+    <div class="page-contents">
+        <div class="container-fluid">
+            <!--   <div class="row">-->
+            <div class="left-space col-lg-1"></div>
+            <div class="blog-order col-lg-6 col-md-7">
+                {{content}}
+                <div class="page-bottoms">
+                    <div class="fenye">
+                        {% if paginator.total_pages > 1 %}
+                        {% if paginator.previous_page %}
+                        <a href="{{site.production_url}}/myBlog/{{ paginator.previous_page_path }}"><div class="link fenye-link"><span class=" icon fa fa-angle-double-left"></span></div></a>
+                        {% endif %}
+
+                        {% for page in (1..paginator.total_pages) %}
+                        {% if page == paginator.page %}
+                        {% if page == 1 %}
+                        <a href="{{site.production_url}}/myBlog/{{ 'index.html' | prepend: site.baseurl | replace: '//', '/' }}" class="active">
+                            <div class="link fenye-a home">{{ page }}</div>
+                        </a>
+                        {% else %}
+                        <a href="{{site.production_url}}/myBlog/{{ site.paginate_path | prepend: site.baseurl | replace: '//', '/' | replace: ':num', page }}" class="active">
+                            <div class="link fenye-a">{{ page }}</div>
+                        </a>
+                        {% endif %}
+                        {% elsif page == 1 %}
+                        <a href="{{site.production_url}}/myBlog/{{ 'index.html' | prepend: site.baseurl | replace: '//', '/' }}">
+                            <div class="link fenye-a">{{ page }}</div>
+                        </a>
+                        {% else %}
+                        <a href="{{site.production_url}}/myBlog/{{ site.paginate_path | prepend: site.baseurl | replace: '//', '/' | replace: ':num', page }}">
+                            <div class="link fenye-a">{{ page }}</div>
+                        </a>
+                        {% endif %}
+                        {% endfor %}
+                        {% if paginator.next_page %}
+                        <a href="{{site.production_url}}/myBlog/{{ paginator.next_page_path }}">
+                            <div class="link fenye-link"><span class=" icon fa fa-angle-double-right"></span></div>
+                        </a>
+                        {% endif %}
+                        {% else %}
+                        <div class="home"></div>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+
+            <div class="side-bar col-lg-3 col-md-4 ">
+                <div class="music">
+                    <dl>
+                        <dt class="art"><img class="musicpictrue" src="{{site.production_url}}/myBlog/assets/chengbi.png" alt="专辑"></dt>
+                        <dd class="icon-song"><span class="icon fa fa-headphones"></span> 恋恋风尘</dd>
+                        <dd class="icon-artist"><span class="icon fa fa-user"></span> 歌手: 程璧</dd>
+                        <dd class="icon-album"><span class="icon fa fa-music"></span> 所属专辑:《程璧的Demo》</dd>
+                        <dd class="icon-like"><a href="#"><span class="icon fa fa-heart"></span> 喜欢</a></dd>
+                       <!-- <dd class="player">
+                            <audio id="audio" src="/assets/llfc.mp3"></audio>
+                        </dd>-->
+                        <!--也可以添加loop属性 音频加载到末尾时，会重新播放-->
+                    </dl>
+                    <iframe frameborder="no" border="0" marginwidth="0" marginheight="0" width=0 height=0 src="//music.163.com/outchain/player?type=2&id=29777652&auto=1&height=32"></iframe>
+                    <!--<div class="MusicPanel">
+                        <div id="Play"><a href="#"><span id="playIcon" class="icon fa fa-play"></span></a></div>
+                        <div class="SongTime" id="1">00:00</div>
+                        <div class="play-progress">
+                            <div class="progress">
+                                <div class="progress-bar" role="progressbar" id="progress"></div>
+                            </div>
+
+                        </div>
+                        <div class="SongTime" id="2">00:00</div>
+                        <div class="voice-pictrue"><span class="icon fa fa-volume-up"></span> </div>
+                        <div class="voice">
+                            <div class="progress">
+                                <div class="progress-bar" role="progressbar" style="width: 50%;">
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>-->
+                </div>
+                <ul class="sidebar-outline">
+                    <li class="cell">
+                        <a href="index.html">
+                            <div class="per-category">
+                            <div class="per-first">全部</div>
+                            <span class="badge">{{ paginator.total_posts }}</span>
+                            </div>
+                        </a>
+                    </li>
+                    {% for category in site.categories %}
+                    <li class="cell click">
+                        <div class="per-category">
+                            <div class="per-first">{{ category | first }}</div>
+                            <span class="badge">{{ category | last | size }}</span>
+                        </div>
+                    </li>
+                    {% endfor %}
+                </ul>
+            </div>
+            <div class="col-lg-2 col-md-1">
+
+            </div>
+            <!-- </div>-->
+        </div>
+    </div>
+</main>
+<footer role="contentinfo">
+
+    </div>
+    <div class="row">
+        <ul class="social">
+            <li><a href="http://weibo.com/u/2488284837?refer_flag=1001030101_&is_all=1"><span class="icon fa fa-weibo"></span> 微博</a> </li>
+            <li>© 2016 <span>❤</span> 彭莎</li>
+            <li><a href="https://github.com/pengshahk"><span class="icon fa fa-github"></span> GitHub</a></li>
+        </ul>
+    </div>
+    <div class="top"><a href="#"><span class="icon fa fa-hand-o-up"></span></a></div>
+</footer>
+
+<script src="{{site.production_url}}/myBlog/js/vendor/jquery-1.12.0.min.js"></script>
+<script src="{{site.production_url}}/myBlog/js/plugins.js"></script>
+<script src="{{site.production_url}}/myBlog/js/main.js"></script>
+<div class="search-tool">
+    <input type="text" class="form-control search-content" id="search-content" data-provide="typeahead" placeholder="文章标题 日期 标签" >
+    <div class="close">
+        <span class="icon fa fa-times-circle-o"></span>
+    </div>
+</div>
+<script src="{{site.production_url}}/myBlog/js/bootstrap3-typeahead.min.js"></script>
+<script src="{{site.production_url}}/myBlog/js/search.js"></script>
+</body>
+

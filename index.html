@@ -1,0 +1,27 @@
+---
+layout: page
+title:
+---
+
+<div class="blog-outline">
+    {% for post in paginator.posts %}
+    <div class="cd-timeline-block">
+        <div class="circle"></div>
+        <div class="cd-timeline-content">
+            <h2 class="title"><a href="{{site.baseurl}}/{{ post.url }}">{{ post.title }}</a></h2>
+            <div class="tags">
+                {% for item in post.tags %}
+                <span class="label label-primary">{{item}}</span>
+                {% endfor %}
+            </div>
+            <p>{{post.description}}</p>
+            <ul class="details">
+                <li class="hearts"> <a href="#"><span class="icon fa fa-heart"></span> <span class="text"></span></a></li>
+                <li class="comments"><a href="#"><span class="icon fa fa-comment"></span> <span class="amount"></span> </a></li>
+                <li class="time"><a href="#"><span class="icon fa fa-clock-o"></span>{{ post.date | date:"%Y-%m-%d"}}</a></li>
+            </ul>
+        </div>
+    </div>
+    {% endfor %}
+
+</div>

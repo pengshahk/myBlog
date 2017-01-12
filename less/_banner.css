@@ -1,0 +1,6 @@
+.banner {
+  height: 260px;
+  background: url(../_includes/image/时光1600×260.png) center center no-repeat;
+  overflow: hidden;
+  background-size: cover;
+}

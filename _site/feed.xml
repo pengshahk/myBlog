@@ -1,0 +1,1227 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title></title>
+    <description></description>
+    <link>http://localhost:4000//</link>
+    <atom:link href="http://localhost:4000//feed.xml" rel="self" type="application/rss+xml"/>
+    <pubDate>Wed, 11 Jan 2017 22:10:35 +0800</pubDate>
+    <lastBuildDate>Wed, 11 Jan 2017 22:10:35 +0800</lastBuildDate>
+    <generator>Jekyll v3.3.1</generator>
+    
+      <item>
+        <title>JavaScript中的this</title>
+        <description>&lt;div class=&quot;p-section&quot;&gt;
+	&lt;h3&gt;作为对象方法调用&lt;/h3&gt;
+	&lt;p&gt;在Javascript中，函数也是对象，因此函数可以作为一个对象的属性，此时该函数被称为该对象的方法，在使用这种调用方式时，&lt;code&gt;this&lt;/code&gt;被自然绑定到该对象。&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&quot;javascript&quot;&gt;var point = {
+   x : 0,
+   y : 0,
+   moveTo : function(x,y){
+      this.x += x;
+	  this.y += y;
+   }
+};
+point.moveTo(1, 1)  //this绑定到point对象
+&lt;/code&gt;&lt;/pre&gt;	
+&lt;/div&gt;
+
+&lt;div class=&quot;p-section&quot;&gt;
+	&lt;h3&gt;作为函数调用&lt;/h3&gt;
+	&lt;p&gt;函数也可以被直接调用，此时绑定到全局对象。在浏览器端，&lt;code&gt;window&lt;/code&gt;就是全局对象。比如下面的例子：函数被调用时，绑定到全局对象，接下来执行赋值语句，这相当于隐式声明了一个全局变量，这显然不是调用者希望的。&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&quot;javascript&quot;&gt;function makeNoSense(x){
+   this.x = x;
+}
+
+makeNoSense(5);  //此时x是一个值为5的全局变量
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;div class=&quot;p-section&quot;&gt;
+	&lt;h3&gt;作为内部函数调用&lt;/h3&gt;
+	&lt;p&gt;对于内部函数，即声明在另外一个函数体内的函数，这种绑定到全局对象的方式会产生另外一个问题。我们仍然以前面提到的&lt;code&gt;point&lt;/code&gt;对象为例，这次我们希望在&lt;code&gt;moveTo&lt;/code&gt;方法内部定义两个函数，分别将&lt;code&gt;x&lt;/code&gt;，&lt;code&gt;y&lt;/code&gt;坐标进行平移。结果可能出乎大家的意料，不仅&lt;code&gt;point&lt;/code&gt;对象没有移动，反而多出两个全局变量&lt;code&gt;x&lt;/code&gt;，&lt;code&gt;y&lt;/code&gt;。&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&quot;javascript&quot;&gt;var point = function(x, y){
+   x : 0,
+   y : 0,
+   moveTo: function(x, y){
+      //内部函数
+	  var moveX = function(x){
+	     this.x = x;  //this绑定到哪里去了？
+	  };
+	  var moveY = function(x){
+	     this.y = y;  //this绑定到哪里去了？
+	  };
+	  
+	  moveX();
+	  moveY();
+   }
+};
+   point.moveTo(1, 1); 
+   point.x; //==&amp;gt;0 
+   point.y; //==&amp;gt;0 
+   x; //==&amp;gt;1 
+   y; //==&amp;gt;1
+&lt;/code&gt;&lt;/pre&gt;
+	&lt;p&gt;这属于Javascript的设计缺陷，正确的设计方式是内部函数的&lt;code&gt;this&lt;/code&gt;应该绑定到其外层函数对应的对象上，为了避免这一设计缺陷，聪明的Javascript程序员想出了变量替代的方法，该变量一般被命名为&lt;code&gt;that&lt;/code&gt;。&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&quot;javascript&quot;&gt;var point = function(x, y){
+   x : 0,
+   y : 0,
+   moveTo: function(x, y){
+	  var that = this;
+      //内部函数
+	  var moveX = function(x){
+	     that.x = x;  //this绑定到哪里去了？
+	  };
+	  var moveY = function(x){
+	     that.y = y;  //this绑定到哪里去了？
+	  };
+	  
+	  moveX();
+	  moveY();
+   }
+};
+   point.moveTo(1, 1); 
+   point.x; //==&amp;gt;1 
+   point.y; //==&amp;gt;1
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;div class=&quot;p-section&quot;&gt;
+	&lt;h3&gt;作为构造函数调用&lt;/h3&gt;
+	&lt;p&gt;Javascript支持面向对象式编程，与主流的面向对象式编程语言不同，Javascript并没有类的概念，而是使用基于原型的继承方式。相应的，Javascript中的构造函数也很特殊，如果不使用&lt;code&gt;new&lt;/code&gt;调用，则和普通函数一样。作为又一项约定俗成的准则，构造函数以大写字母开头，提醒调用者使用正确的方式调用。如果调用正确，&lt;code&gt;this&lt;/code&gt;绑定到新创建的对象上。&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&quot;javascript&quot;&gt;function Point(x, y){
+   this.x = x;
+   this.y = y;
+}
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;div class=&quot;p-section&quot;&gt;
+	&lt;h3&gt;使用apply或call调用&lt;/h3&gt;
+	&lt;p&gt;再次重申一次，在Javascript中函数也是对象，对象则有方法，&lt;code&gt;apply&lt;/code&gt;或&lt;code&gt;call&lt;/code&gt;就是函数对象的方法。这两个方法异常强大，它们允许切换函数执行时的上下文环境，即&lt;code&gt;this&lt;/code&gt;绑定的对象。很多Javascript中的技巧以及类库都用到了该方法，让我们看一个具体的例子：&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&quot;javascript&quot;&gt;function Point(x, y){
+   this.x = x;
+   this.y = y;
+   this.moveTo = function(x, y){
+      this.x = x;
+	  this.y = y;
+   };
+}
+
+var p1 = new Point(0,0);
+var p2 = {x: 0,y: 0};
+p1.moveTo(1,1);
+p1.moveTo.apply(p2,[10,10]);
+&lt;/code&gt;&lt;/pre&gt;
+
+	&lt;p&gt;在上面的例子中，我们使用构造函数生成了一个对象&lt;code&gt;p1&lt;/code&gt;，该对象同时具有&lt;code&gt;moveTo&lt;/code&gt;方法；使用对象字面量创建了另一个对象&lt;code&gt;p2&lt;/code&gt;，我们看到使用&lt;code&gt;apply&lt;/code&gt;可以将&lt;code&gt;p1&lt;/code&gt;的方法应用到&lt;code&gt;p2&lt;/code&gt;上，这时候&lt;code&gt;this&lt;/code&gt;也被绑定到对象&lt;code&gt;p2&lt;/code&gt;上。另一个方法&lt;code&gt;call&lt;/code&gt;也具备同样功能，不同的是最后的参数不是作为一个数组统一传入，而是分开传入的。&lt;/p&gt;
+&lt;/div&gt;
+
+</description>
+        <pubDate>Thu, 01 Dec 2016 00:00:00 +0800</pubDate>
+        <link>http://localhost:4000//javascript/2016/12/01/this</link>
+        <guid isPermaLink="true">http://localhost:4000//javascript/2016/12/01/this</guid>
+        
+        <category>this</category>
+        
+        <category>Javascript</category>
+        
+        
+        <category>Javascript</category>
+        
+      </item>
+    
+      <item>
+        <title>css中的布局模式</title>
+        <description>&lt;div class=&quot;p-section&quot;&gt;
+	&lt;h3&gt;CSS2布局模式&lt;/h3&gt;
+	&lt;p&gt;谈到布局，CSS2.1中定义了四种布局模式，由一个盒与其兄弟、祖先盒的关系决定其尺寸与位置的算法。&lt;/p&gt;
+	&lt;ul&gt;
+		&lt;li&gt;&lt;span class=&quot;icon fa fa-cube&quot;&gt;&lt;/span&gt;块布局：呈现文档的布局模式。&lt;/li&gt;
+		&lt;li&gt;&lt;span class=&quot;icon fa fa-cube&quot;&gt;&lt;/span&gt;行内布局：呈现文本的布局模式。&lt;/li&gt;
+		&lt;li&gt;&lt;span class=&quot;icon fa fa-cube&quot;&gt;&lt;/span&gt;表格布局：用格子来呈现2D数据的布局模式。&lt;/li&gt;
+		&lt;li&gt;&lt;span class=&quot;icon fa fa-cube&quot;&gt;&lt;/span&gt;定位布局：能够直接的定位元素的布局模式，定位元素基本与其他元素没有任何关系。&lt;/li&gt;
+	&lt;/ul&gt;
+&lt;/div&gt;
+
+&lt;div class=&quot;p-section&quot;&gt;
+	&lt;h3&gt;CSS3 Flexbox布局&lt;/h3&gt;
+	&lt;p&gt;CSS3引入的布局模式Flexbox布局，主要思想是让容器有能力让其子项目能够改变其宽度、高度（甚至顺序），以最佳方式填充可用空间（主要是为了适应所有类型的显示设备和屏幕大小）。Flex容器会使子项目（伸缩项目）扩展来填满可用空间，或缩小以防止溢出容器。最重要的是，Flexbox布局方向不可预知，不想常规的布局，块就是从上到下，内联就是从左到右。而那些常规的适合页面布局，但对于支持大型或者复杂的应用程序（特别是涉及取向改变、缩放和收缩等）就缺乏灵活性。&lt;/p&gt;
+	&lt;p&gt;Flexbox布局对于设计比较复杂的页面非常有用。可以轻松实现屏幕和浏览器窗口大小发生变化时保持元素的相对位置和大小不变。同时减少了依赖于浮动布局实现元素位置的定义以及重置元素的大小。综合而言，Flexbox布局功能主要具有以下几点。&lt;/p&gt;
+	&lt;ul&gt;
+		&lt;li&gt;&lt;span class=&quot;icon fa fa-cube&quot;&gt;&lt;/span&gt;屏幕和浏览器窗口大小发生改变也可以灵活调整布局。&lt;/li&gt;
+		&lt;li&gt;&lt;span class=&quot;icon fa fa-cube&quot;&gt;&lt;/span&gt;指定伸缩项目沿着主轴或侧轴按比例分配额外空间，从而调整伸缩项目的大小。&lt;/li&gt;
+		&lt;li&gt;&lt;span class=&quot;icon fa fa-cube&quot;&gt;&lt;/span&gt;指定伸缩项目沿着主轴或侧轴将伸缩容器额外空间分配到伸缩项目之前、之后或之间。&lt;/li&gt;
+		&lt;li&gt;&lt;span class=&quot;icon fa fa-cube&quot;&gt;&lt;/span&gt;指定如何将垂直于元素布局轴的额外空间分布到该元素周围。&lt;/li&gt;
+		&lt;li&gt;&lt;span class=&quot;icon fa fa-cube&quot;&gt;&lt;/span&gt;指定元素在页面上的布局方向。&lt;/li&gt;
+		&lt;li&gt;&lt;span class=&quot;icon fa fa-cube&quot;&gt;&lt;/span&gt;按照不同于DOM所指定的排序方式对屏幕上的元素重新排序。&lt;/li&gt;
+	&lt;/ul&gt;
+&lt;/div&gt;
+
+&lt;div class=&quot;p-section&quot;&gt;
+	&lt;h3&gt;Flexbox模型中的术语&lt;/h3&gt;
+	&lt;p&gt;和CSS3其他属性不一样，Flexbox并不是一个属性，而是一个模块，包括多个CSS3属性，涉及很多东西，包括整个组属性。虽然现在对Flexbox有一定的了解，如果想更好的使用Flexbox，新的术语和概念可能是一个障碍，所以首先了解基本的概念。下图为一个row伸缩容器中各种方向与大小术语。&lt;/p&gt;
+	&lt;div class=&quot;image&quot;&gt;&lt;img src=&quot;http://ffandii.github.io/Personal-blog/images/post/css/flexbox.png&quot; width=&quot;588&quot; height=&quot;231&quot; /&gt;&lt;/div&gt;
+	&lt;p&gt;主轴、主轴方向：用户代理沿着一个伸缩容器的主轴配置伸缩项目，主轴是主轴方向的延伸。伸缩容器的主轴，伸缩项目主要沿着这条轴进行布局。小心，它不一定是水平的，这主要取决于&lt;code&gt;justify-content&lt;/code&gt;属性，如果取值为&lt;code&gt;column&lt;/code&gt;，主轴的方向为纵向的。&lt;/p&gt;
+	&lt;p&gt;主轴起点、主轴终点：伸缩项目的配置从容器的主轴起点开始，往主轴终点边结束。也就是说，伸缩项目放置在伸缩容器从主轴起点到主轴终点方向。&lt;/p&gt;
+	&lt;p&gt;主轴长度、主轴长度属性：伸缩容器在主轴方向上的宽度或高度就是项目的主轴长度，伸缩项目的主轴长度属性就是&lt;code&gt;width&lt;/code&gt;和&lt;code&gt;height&lt;/code&gt;属性，由哪一个对着主轴方向决定。&lt;/p&gt;
+	&lt;p&gt;侧轴起点、侧轴终点：填满项目的伸缩行的配置从容器的侧轴起点开始，往侧轴终点边结束。&lt;/p&gt;
+	&lt;p&gt;侧轴长度、侧轴长度属性：伸缩项目在侧轴方向的宽度或高度就是项目的侧轴长度，伸缩项目的侧轴长度属性为&lt;code&gt;width&lt;/code&gt;和&lt;code&gt;height&lt;/code&gt;属性，由哪一个对着侧轴方向决定。&lt;/p&gt;
+&lt;/div&gt;
+
+&lt;div class=&quot;p-section&quot;&gt;
+	&lt;h3&gt;伸缩容器和伸缩项目&lt;/h3&gt;
+	&lt;p&gt;通过&lt;code&gt;display&lt;/code&gt;属性，可以显式的给一个元素设置为&lt;code&gt;flex&lt;/code&gt;或者&lt;code&gt;inline-flex&lt;/code&gt;，这个容器就是一个伸缩容器。伸缩容器会为其内容创立新的伸缩格式化上下文，其中设置为&lt;code&gt;flex&lt;/code&gt;的容器会被渲染为一个块级元素，而被设置为&lt;code&gt;inline-flex&lt;/code&gt;的容器则被渲染为一个行内元素。若元素&lt;code&gt;display&lt;/code&gt;的指定值是&lt;code&gt;inline-flex&lt;/code&gt;切=且元素为一个浮动或绝对定位元素，则&lt;code&gt;display&lt;/code&gt;的计算值为&lt;code&gt;flex&lt;/code&gt;。&lt;/p&gt;
+	&lt;h4&gt;伸缩容器的属性&lt;/h4&gt; 
+	&lt;p&gt;Flexbox伸缩布局中伸缩容器和伸缩项目是伸缩布局模块的重要部分，其中每一部分都具有各自的属性。&lt;/p&gt;
+	&lt;p&gt;伸缩流方向：是指伸缩容器的主轴方向，其决定了伸缩项目放置在伸缩容器的方向。伸缩流方向主要通过&lt;code&gt;flex-direction&lt;/code&gt;属性来设置，其默认值为&lt;code&gt;row&lt;/code&gt;。&lt;/p&gt;
+	&lt;p&gt;伸缩行换行：伸缩项目在伸缩容器中有时候也会溢出伸缩容器。与传统的盒模型一样，CSS允许使用&lt;code&gt;overflow&lt;/code&gt;属性来处理溢出内容的显示方式。在伸缩容器中，有一个伸缩换行属性，主要用来设置伸缩容器的伸缩项目是单行显示还是多行显示，以及决定侧轴的方向，主要通过&lt;code&gt;flex-wrap&lt;/code&gt;属性决定伸缩项目是否换行，默认值为&lt;code&gt;nowrap&lt;/code&gt;。伸缩方向与换行属性&lt;code&gt;flex-flow&lt;/code&gt;同时设定了伸缩流方向&lt;code&gt;flex-direction&lt;/code&gt;和伸缩换行&lt;code&gt;flex-wrap&lt;/code&gt;属性。&lt;/p&gt;
+	&lt;h4&gt;伸缩项目的属性&lt;/h4&gt;
+	&lt;p&gt;一个伸缩项目是一个伸缩容器的子元素。伸缩容器中的文本也被视为一个伸缩项目。伸缩项目中内容与普通流一样。比如说当一个伸缩项目被设置为浮动，依然可以在伸缩项目中放置一个浮动元素。伸缩项目都有一个主轴长度和一个侧轴长度。主轴长度是主轴项目在主轴上的尺寸，侧轴长度是伸缩项目在侧轴上的尺寸。或者说，一个伸缩项目的宽或高取决于伸缩容器的轴。下面的几个属性可以调整伸缩项目的行为。&lt;/p&gt;
+	&lt;p&gt;显示顺序：伸缩容器中的伸缩项目默认显示顺序是遵循文档在源码中出现的先后顺序，可以通过伸缩项目的显示顺序来修改在页面的显示顺序，也可以通过这个属性对伸缩项目进行排序组合。&lt;/p&gt;
+	&lt;p&gt;侧轴对齐：包括两种，一种是&lt;code&gt;align-items&lt;/code&gt;属性，可以用来设置伸缩容器中包括匿名伸缩项目的所有项目的对齐方式；另一种为&lt;code&gt;align-self&lt;/code&gt;属性，主要用来在单独的伸缩项目上覆写默认的对齐方式，对于匿名的伸缩项目，&lt;code&gt;align-self&lt;/code&gt;的值永远与其关联的伸缩容器的&lt;code&gt;align-items&lt;/code&gt;的值相同。&lt;/p&gt;
+	&lt;p&gt;伸缩性：定义伸缩项目可以改变它们的宽度或高度填补可用的空间。可以将伸缩容器的额外空间分发给其伸缩项目（与伸缩项目的真弹性成正比）或将它们缩小以防止伸缩项目的溢出。&lt;/p&gt;
+	&lt;p&gt;伸缩行：伸缩项目沿着伸缩容器内的一个伸缩行定位，伸缩容器可以是单行的，也可以是多行的。其主要由&lt;code&gt;flex-wrap&lt;/code&gt;属性决定。每一个伸缩行至少包含一个伸缩项目。&lt;/p&gt;
+	&lt;h4&gt;旧版本Flexbox模型浏览器的支持情况&lt;/h4&gt;
+	&lt;div class=&quot;browser&quot;&gt;
+        &lt;table class=&quot;browser&quot;&gt;
+            &lt;thead&gt;
+                &lt;tr&gt;
+                    &lt;th&gt;属性&lt;/th&gt;
+                    &lt;th&gt;&lt;img src=&quot;http://ffandii.github.io/Personal-blog/images/post/browser/ie.png&quot; width=&quot;32&quot; height=&quot;32&quot; /&gt;&lt;/th&gt;
+                    &lt;th&gt;&lt;img src=&quot;http://ffandii.github.io/Personal-blog/images/post/browser/firefox.png&quot; width=&quot;32&quot; height=&quot;32&quot; /&gt;&lt;/th&gt;
+                    &lt;th&gt;&lt;img src=&quot;http://ffandii.github.io/Personal-blog/images/post/browser/Chrome.png&quot; width=&quot;32&quot; height=&quot;32&quot; /&gt;&lt;/th&gt;
+                    &lt;th&gt;&lt;img src=&quot;http://ffandii.github.io/Personal-blog/images/post/browser/Opera.png&quot; width=&quot;32&quot; height=&quot;32&quot; /&gt;&lt;/th&gt;
+                    &lt;th&gt;&lt;img src=&quot;http://ffandii.github.io/Personal-blog/images/post/browser/Safari.png&quot; width=&quot;32&quot; height=&quot;32&quot; /&gt;&lt;/th&gt;
+                &lt;/tr&gt;
+            &lt;/thead&gt;
+			&lt;tbody&gt;
+				&lt;tr&gt;
+					&lt;td&gt;Flexbox&lt;/td&gt;
+					&lt;td&gt;×&lt;/td&gt;
+					&lt;td&gt;2~21√&lt;/td&gt;
+					&lt;td&gt;4~20√&lt;/td&gt;
+					&lt;td&gt;×&lt;/td&gt;
+					&lt;td&gt;3.1~6√&lt;/td&gt;
+				&lt;/tr&gt;
+			&lt;/tbody&gt;
+        &lt;/table&gt;
+    &lt;/div&gt;
+	&lt;h4&gt;新版本Flexbox模型浏览器的支持情况&lt;/h4&gt;
+	&lt;div class=&quot;browser&quot;&gt;
+        &lt;table class=&quot;browser&quot;&gt;
+            &lt;thead&gt;
+                &lt;tr&gt;
+                    &lt;th&gt;属性&lt;/th&gt;
+                    &lt;th&gt;&lt;img src=&quot;http://ffandii.github.io/Personal-blog/images/post/browser/ie.png&quot; width=&quot;32&quot; height=&quot;32&quot; /&gt;&lt;/th&gt;
+                    &lt;th&gt;&lt;img src=&quot;http://ffandii.github.io/Personal-blog/images/post/browser/firefox.png&quot; width=&quot;32&quot; height=&quot;32&quot; /&gt;&lt;/th&gt;
+                    &lt;th&gt;&lt;img src=&quot;http://ffandii.github.io/Personal-blog/images/post/browser/Chrome.png&quot; width=&quot;32&quot; height=&quot;32&quot; /&gt;&lt;/th&gt;
+                    &lt;th&gt;&lt;img src=&quot;http://ffandii.github.io/Personal-blog/images/post/browser/Opera.png&quot; width=&quot;32&quot; height=&quot;32&quot; /&gt;&lt;/th&gt;
+                    &lt;th&gt;&lt;img src=&quot;http://ffandii.github.io/Personal-blog/images/post/browser/Safari.png&quot; width=&quot;32&quot; height=&quot;32&quot; /&gt;&lt;/th&gt;
+                &lt;/tr&gt;
+            &lt;/thead&gt;
+			&lt;tbody&gt;
+				&lt;tr&gt;
+					&lt;td&gt;Flexbox&lt;/td&gt;
+					&lt;td&gt;11+√&lt;/td&gt;
+					&lt;td&gt;22+√&lt;/td&gt;
+					&lt;td&gt;21+√&lt;/td&gt;
+					&lt;td&gt;12.1+√&lt;/td&gt;
+					&lt;td&gt;×&lt;/td&gt;
+				&lt;/tr&gt;
+			&lt;/tbody&gt;
+        &lt;/table&gt;
+    &lt;/div&gt;
+	&lt;h4&gt;开启Flexbox：让一个元素变成一个伸缩容器&lt;/h4&gt;
+	&lt;div class=&quot;browser&quot;&gt;
+        &lt;table class=&quot;browser&quot;&gt;
+            &lt;thead&gt;
+                &lt;tr&gt;
+                    &lt;th&gt;规范版本&lt;/th&gt;
+                    &lt;th&gt;属性名称&lt;/th&gt;
+                    &lt;th&gt;块伸缩容器&lt;/th&gt;
+                    &lt;th&gt;内联伸缩容器&lt;/th&gt;
+                &lt;/tr&gt;
+            &lt;/thead&gt;
+			&lt;tbody&gt;
+				&lt;tr&gt;
+					&lt;td&gt;标准版本&lt;/td&gt;
+					&lt;td&gt;display&lt;/td&gt;
+					&lt;td&gt;flex&lt;/td&gt;
+					&lt;td&gt;inline-flex&lt;/td&gt;
+				&lt;/tr&gt;
+				&lt;tr&gt;
+					&lt;td&gt;混合版本&lt;/td&gt;
+					&lt;td&gt;display&lt;/td&gt;
+					&lt;td&gt;flexbox&lt;/td&gt;
+					&lt;td&gt;inline-flexbox&lt;/td&gt;
+				&lt;/tr&gt;
+				&lt;tr&gt;
+					&lt;td&gt;最老版本&lt;/td&gt;
+					&lt;td&gt;display&lt;/td&gt;
+					&lt;td&gt;box&lt;/td&gt;
+					&lt;td&gt;inline-box&lt;/td&gt;
+				&lt;/tr&gt;
+			&lt;/tbody&gt;
+        &lt;/table&gt;
+    &lt;/div&gt;
+	&lt;h4&gt;主轴对齐方式：指定伸缩项目沿主轴对齐方式&lt;/h4&gt;
+	&lt;div class=&quot;browser&quot;&gt;
+        &lt;table class=&quot;browser&quot;&gt;
+            &lt;thead&gt;
+                &lt;tr&gt;
+                    &lt;th&gt;规范版本&lt;/th&gt;
+                    &lt;th&gt;属性名称&lt;/th&gt;
+                    &lt;th&gt;start&lt;/th&gt;
+                    &lt;th&gt;center&lt;/th&gt;
+					&lt;th&gt;end&lt;/th&gt;
+					&lt;th&gt;justify&lt;/th&gt;
+					&lt;th&gt;distribute&lt;/th&gt;
+                &lt;/tr&gt;
+            &lt;/thead&gt;
+			&lt;tbody&gt;
+				&lt;tr&gt;
+					&lt;td&gt;标准版本&lt;/td&gt;
+					&lt;td&gt;justify-pack&lt;/td&gt;
+					&lt;td&gt;flex-start&lt;/td&gt;
+					&lt;td&gt;center&lt;/td&gt;
+					&lt;td&gt;flex-pack&lt;/td&gt;
+					&lt;td&gt;flex-end&lt;/td&gt;
+					&lt;td&gt;space-around&lt;/td&gt;
+				&lt;/tr&gt;
+				&lt;tr&gt;
+					&lt;td&gt;混合版本&lt;/td&gt;
+					&lt;td&gt;flex-pack&lt;/td&gt;
+					&lt;td&gt;start&lt;/td&gt;
+					&lt;td&gt;center&lt;/td&gt;
+					&lt;td&gt;end&lt;/td&gt;
+					&lt;td&gt;justify&lt;/td&gt;
+					&lt;td&gt;distribute&lt;/td&gt;
+				&lt;/tr&gt;
+				&lt;tr&gt;
+					&lt;td&gt;最老版本&lt;/td&gt;
+					&lt;td&gt;box-pack&lt;/td&gt;
+					&lt;td&gt;start&lt;/td&gt;
+					&lt;td&gt;center&lt;/td&gt;
+					&lt;td&gt;end&lt;/td&gt;
+					&lt;td&gt;justify&lt;/td&gt;
+					&lt;td&gt;N/A&lt;/td&gt;
+				&lt;/tr&gt;
+			&lt;/tbody&gt;
+        &lt;/table&gt;
+    &lt;/div&gt;
+	&lt;h4&gt;侧轴对齐方式：指定伸缩项目沿侧轴对齐方式&lt;/h4&gt;
+	&lt;div class=&quot;browser&quot;&gt;
+        &lt;table class=&quot;browser&quot;&gt;
+            &lt;thead&gt;
+                &lt;tr&gt;
+                    &lt;th&gt;规范版本&lt;/th&gt;
+                    &lt;th&gt;属性名称&lt;/th&gt;
+                    &lt;th&gt;start&lt;/th&gt;
+                    &lt;th&gt;center&lt;/th&gt;
+					&lt;th&gt;end&lt;/th&gt;
+					&lt;th&gt;baseline&lt;/th&gt;
+					&lt;th&gt;stretch&lt;/th&gt;
+                &lt;/tr&gt;
+            &lt;/thead&gt;
+			&lt;tbody&gt;
+				&lt;tr&gt;
+					&lt;td&gt;标准版本&lt;/td&gt;
+					&lt;td&gt;align-items&lt;/td&gt;
+					&lt;td&gt;flex-start&lt;/td&gt;
+					&lt;td&gt;center&lt;/td&gt;
+					&lt;td&gt;flex-end&lt;/td&gt;
+					&lt;td&gt;baseline&lt;/td&gt;
+					&lt;td&gt;stretch&lt;/td&gt;
+				&lt;/tr&gt;
+				&lt;tr&gt;
+					&lt;td&gt;混合版本&lt;/td&gt;
+					&lt;td&gt;flex-align&lt;/td&gt;
+					&lt;td&gt;start&lt;/td&gt;
+					&lt;td&gt;center&lt;/td&gt;
+					&lt;td&gt;end&lt;/td&gt;
+					&lt;td&gt;baseline&lt;/td&gt;
+					&lt;td&gt;stretch&lt;/td&gt;
+				&lt;/tr&gt;
+				&lt;tr&gt;
+					&lt;td&gt;最老版本&lt;/td&gt;
+					&lt;td&gt;box-align&lt;/td&gt;
+					&lt;td&gt;start&lt;/td&gt;
+					&lt;td&gt;center&lt;/td&gt;
+					&lt;td&gt;end&lt;/td&gt;
+					&lt;td&gt;baseline&lt;/td&gt;
+					&lt;td&gt;stretch&lt;/td&gt;
+				&lt;/tr&gt;
+			&lt;/tbody&gt;
+        &lt;/table&gt;
+    &lt;/div&gt;
+	&lt;h4&gt;伸缩项目行对齐方式&lt;/h4&gt;
+	&lt;div class=&quot;browser&quot;&gt;
+        &lt;table class=&quot;browser&quot;&gt;
+            &lt;thead&gt;
+                &lt;tr&gt;
+                    &lt;th&gt;规范版本&lt;/th&gt;
+                    &lt;th&gt;属性名称&lt;/th&gt;
+                    &lt;th&gt;start&lt;/th&gt;
+                    &lt;th&gt;center&lt;/th&gt;
+					&lt;th&gt;end&lt;/th&gt;
+					&lt;th&gt;justify&lt;/th&gt;
+					&lt;th&gt;distribute&lt;/th&gt;
+					&lt;th&gt;stretch&lt;/th&gt;
+                &lt;/tr&gt;
+            &lt;/thead&gt;
+			&lt;tbody&gt;
+				&lt;tr&gt;
+					&lt;td&gt;标准版本&lt;/td&gt;
+					&lt;td&gt;align-content&lt;/td&gt;
+					&lt;td&gt;flex-start&lt;/td&gt;
+					&lt;td&gt;center&lt;/td&gt;
+					&lt;td&gt;flex-end&lt;/td&gt;
+					&lt;td&gt;space-between&lt;/td&gt;
+					&lt;td&gt;space-around&lt;/td&gt;
+					&lt;td&gt;stretch&lt;/td&gt;
+				&lt;/tr&gt;
+				&lt;tr&gt;
+					&lt;td&gt;混合版本&lt;/td&gt;
+					&lt;td&gt;flex-line-pack&lt;/td&gt;
+					&lt;td&gt;start&lt;/td&gt;
+					&lt;td&gt;center&lt;/td&gt;
+					&lt;td&gt;end&lt;/td&gt;
+					&lt;td&gt;justify&lt;/td&gt;
+					&lt;td&gt;distribute&lt;/td&gt;
+					&lt;td&gt;stretch&lt;/td&gt;
+				&lt;/tr&gt;
+				&lt;tr&gt;
+					&lt;td&gt;最老版本&lt;/td&gt;
+					&lt;td colspan=&quot;7&quot;&gt;N/A&lt;/td&gt;
+				&lt;/tr&gt;
+			&lt;/tbody&gt;
+        &lt;/table&gt;
+    &lt;/div&gt;
+	&lt;h4&gt;单个伸缩项目行对齐方式&lt;/h4&gt;
+	&lt;div class=&quot;browser&quot;&gt;
+        &lt;table class=&quot;browser&quot;&gt;
+            &lt;thead&gt;
+                &lt;tr&gt;
+                    &lt;th&gt;规范版本&lt;/th&gt;
+                    &lt;th&gt;属性名称&lt;/th&gt;
+					&lt;th&gt;auto&lt;/th&gt;
+                    &lt;th&gt;start&lt;/th&gt;
+                    &lt;th&gt;center&lt;/th&gt;
+					&lt;th&gt;end&lt;/th&gt;
+					&lt;th&gt;baseline&lt;/th&gt;
+					&lt;th&gt;stretch&lt;/th&gt;
+                &lt;/tr&gt;
+            &lt;/thead&gt;
+			&lt;tbody&gt;
+				&lt;tr&gt;
+					&lt;td&gt;标准版本&lt;/td&gt;
+					&lt;td&gt;align-self&lt;/td&gt;
+					&lt;td&gt;auto&lt;/td&gt;
+					&lt;td&gt;flex-start&lt;/td&gt;
+					&lt;td&gt;center&lt;/td&gt;
+					&lt;td&gt;flex-end&lt;/td&gt;
+					&lt;td&gt;baseline&lt;/td&gt;
+					&lt;td&gt;stretch&lt;/td&gt;
+				&lt;/tr&gt;
+				&lt;tr&gt;
+					&lt;td&gt;混合版本&lt;/td&gt;
+					&lt;td&gt;flex-item-align&lt;/td&gt;
+					&lt;td&gt;auto&lt;/td&gt;
+					&lt;td&gt;start&lt;/td&gt;
+					&lt;td&gt;center&lt;/td&gt;
+					&lt;td&gt;end&lt;/td&gt;
+					&lt;td&gt;baseline&lt;/td&gt;
+					&lt;td&gt;stretch&lt;/td&gt;
+				&lt;/tr&gt;
+				&lt;tr&gt;
+					&lt;td&gt;最老版本&lt;/td&gt;
+					&lt;td colspan=&quot;7&quot;&gt;N/A&lt;/td&gt;
+				&lt;/tr&gt;
+			&lt;/tbody&gt;
+        &lt;/table&gt;
+    &lt;/div&gt;
+	&lt;h4&gt;显示顺序：指定伸缩项目的顺序&lt;/h4&gt;
+	&lt;div class=&quot;browser&quot;&gt;
+        &lt;table class=&quot;browser&quot;&gt;
+            &lt;thead&gt;
+                &lt;tr&gt;
+                    &lt;th&gt;规范版本&lt;/th&gt;
+                    &lt;th&gt;属性名称&lt;/th&gt;
+					&lt;th&gt;属性值&lt;/th&gt;
+                &lt;/tr&gt;
+            &lt;/thead&gt;
+			&lt;tbody&gt;
+				&lt;tr&gt;
+					&lt;td&gt;标准版本&lt;/td&gt;
+					&lt;td&gt;order&lt;/td&gt;
+					&lt;td&gt;&amp;lt;number&amp;gt;&lt;/td&gt;
+				&lt;/tr&gt;
+				&lt;tr&gt;
+					&lt;td&gt;混合版本&lt;/td&gt;
+					&lt;td&gt;flex-order&lt;/td&gt;
+					&lt;td&gt;&amp;lt;number&amp;gt;&lt;/td&gt;
+				&lt;/tr&gt;
+				&lt;tr&gt;
+					&lt;td&gt;最老版本&lt;/td&gt;
+					&lt;td&gt;box-ordinal-group&lt;/td&gt;
+					&lt;td&gt;&amp;lt;integer&amp;gt;&lt;/td&gt;
+				&lt;/tr&gt;
+			&lt;/tbody&gt;
+        &lt;/table&gt;
+    &lt;/div&gt;
+	&lt;h4&gt;伸缩性：指定伸缩项目如何伸缩尺寸&lt;/h4&gt;
+	&lt;div class=&quot;browser&quot;&gt;
+        &lt;table class=&quot;browser&quot;&gt;
+            &lt;thead&gt;
+                &lt;tr&gt;
+                    &lt;th&gt;规范版本&lt;/th&gt;
+                    &lt;th&gt;属性名称&lt;/th&gt;
+					&lt;th&gt;属性值&lt;/th&gt;
+                &lt;/tr&gt;
+            &lt;/thead&gt;
+			&lt;tbody&gt;
+				&lt;tr&gt;
+					&lt;td&gt;标准版本&lt;/td&gt;
+					&lt;td&gt;flex&lt;/td&gt;
+					&lt;td&gt;none | [&amp;lt;flex-grow&amp;gt;&amp;lt;flex-shrink&amp;gt;?||&amp;lt;flex-basis&amp;gt;]&lt;/td&gt;
+				&lt;/tr&gt;
+				&lt;tr&gt;
+					&lt;td&gt;混合版本&lt;/td&gt;
+					&lt;td&gt;flex&lt;/td&gt;
+					&lt;td&gt;none | [&amp;lt;pos-flex&amp;gt;&amp;lt;neg-flex&amp;gt;?||&amp;lt;preferred-size&amp;gt;]&lt;/td&gt;
+				&lt;/tr&gt;
+				&lt;tr&gt;
+					&lt;td&gt;最老版本&lt;/td&gt;
+					&lt;td&gt;box-flex&lt;/td&gt;
+					&lt;td&gt;&amp;lt;number&amp;gt;&lt;/td&gt;
+				&lt;/tr&gt;
+			&lt;/tbody&gt;
+        &lt;/table&gt;
+    &lt;/div&gt;
+	&lt;h4&gt;伸缩流：指定伸缩容器主轴的伸缩流方向&lt;/h4&gt;
+	&lt;div class=&quot;browser&quot;&gt;
+        &lt;table class=&quot;browser&quot;&gt;
+            &lt;thead&gt;
+                &lt;tr&gt;
+                    &lt;th&gt;规范版本&lt;/th&gt;
+                    &lt;th&gt;属性名称&lt;/th&gt;
+					&lt;th&gt;水平方向&lt;/th&gt;
+					&lt;th&gt;反向水平&lt;/th&gt;
+					&lt;th&gt;垂直方向&lt;/th&gt;
+					&lt;th&gt;反向垂直&lt;/th&gt;
+                &lt;/tr&gt;
+            &lt;/thead&gt;
+			&lt;tbody&gt;
+				&lt;tr&gt;
+					&lt;td&gt;标准版本&lt;/td&gt;
+					&lt;td&gt;flex-direction&lt;/td&gt;
+					&lt;td&gt;row&lt;/td&gt;
+					&lt;td&gt;row-reverse&lt;/td&gt;
+					&lt;td&gt;column&lt;/td&gt;
+					&lt;td&gt;column-reverse&lt;/td&gt;
+				&lt;/tr&gt;
+				&lt;tr&gt;
+					&lt;td&gt;混合版本&lt;/td&gt;
+					&lt;td&gt;flex-direction&lt;/td&gt;
+					&lt;td&gt;row&lt;/td&gt;
+					&lt;td&gt;row-reverse&lt;/td&gt;
+					&lt;td&gt;column&lt;/td&gt;
+					&lt;td&gt;column-reverse&lt;/td&gt;
+				&lt;/tr&gt;
+				&lt;tr&gt;
+					&lt;td&gt;最老版本&lt;/td&gt;
+					&lt;td&gt;box-orient&lt;/td&gt;
+					&lt;td&gt;horizontal&lt;/td&gt;
+					&lt;td&gt;horizontal&lt;/td&gt;
+					&lt;td&gt;vertical&lt;/td&gt;
+					&lt;td&gt;vertical&lt;/td&gt;
+				&lt;/tr&gt;
+			&lt;/tbody&gt;
+        &lt;/table&gt;
+    &lt;/div&gt;
+	&lt;h4&gt;换行：指定伸缩项目是否沿着侧轴排列&lt;/h4&gt;
+	&lt;div class=&quot;browser&quot;&gt;
+        &lt;table class=&quot;browser&quot;&gt;
+            &lt;thead&gt;
+                &lt;tr&gt;
+                    &lt;th&gt;规范版本&lt;/th&gt;
+                    &lt;th&gt;属性名称&lt;/th&gt;
+					&lt;th&gt;不换行&lt;/th&gt;
+					&lt;th&gt;换行&lt;/th&gt;
+					&lt;th&gt;反转换行&lt;/th&gt;
+                &lt;/tr&gt;
+            &lt;/thead&gt;
+			&lt;tbody&gt;
+				&lt;tr&gt;
+					&lt;td&gt;标准版本&lt;/td&gt;
+					&lt;td&gt;flex-wrap&lt;/td&gt;
+					&lt;td&gt;nowrap&lt;/td&gt;
+					&lt;td&gt;wrap&lt;/td&gt;
+					&lt;td&gt;wrap-reverse&lt;/td&gt;
+				&lt;/tr&gt;
+				&lt;tr&gt;
+					&lt;td&gt;混合版本&lt;/td&gt;
+					&lt;td&gt;flex-wrap&lt;/td&gt;
+					&lt;td&gt;nowrap&lt;/td&gt;
+					&lt;td&gt;wrap&lt;/td&gt;
+					&lt;td&gt;wrap-reverse&lt;/td&gt;
+				&lt;/tr&gt;
+				&lt;tr&gt;
+					&lt;td&gt;最老版本&lt;/td&gt;
+					&lt;td&gt;box-lines&lt;/td&gt;
+					&lt;td&gt;single&lt;/td&gt;
+					&lt;td&gt;multiple&lt;/td&gt;
+					&lt;td&gt;N/A&lt;/td&gt;
+				&lt;/tr&gt;
+			&lt;/tbody&gt;
+        &lt;/table&gt;
+    &lt;/div&gt;
+&lt;/div&gt;
+</description>
+        <pubDate>Mon, 07 Nov 2016 00:00:00 +0800</pubDate>
+        <link>http://localhost:4000//css/2016/11/07/css-layout</link>
+        <guid isPermaLink="true">http://localhost:4000//css/2016/11/07/css-layout</guid>
+        
+        <category>CSS</category>
+        
+        <category>布局模式</category>
+        
+        
+        <category>CSS</category>
+        
+      </item>
+    
+      <item>
+        <title>添加和移除事件处理器</title>
+        <description>&lt;div class=&quot;p-section&quot;&gt;
+	&lt;h3&gt;典型的跨浏览器代码&lt;/h3&gt;
+&lt;pre&gt;&lt;code class=&quot;javascript&quot;&gt;function addHandler(target,eventType,handler){
+   if(target.addEventListener){   //DOM2 events
+      target.addEventListener(eventType,handler,false);
+   }
+   else {   //IE
+      target.attachEvent(&quot;on&quot;+eventType,handler);
+   }
+}
+
+function removeHandler(target,eventType,handler){
+   if(target.removeEventListener){  //DOM2 events
+      target.removeEventListener(eventType,handler,false);
+   }
+   else {
+      target.detachEvent(&quot;on&quot;+eventType,handler);
+   }
+}
+&lt;/code&gt;&lt;/pre&gt;	
+	&lt;p&gt;此代码通过测试&lt;code&gt;addEventListener()&lt;/code&gt;和&lt;code&gt;removeEventListener()&lt;/code&gt;来测试DOM2 level事件是否被支持。除IE外，所有主流浏览器支持DOM2 level事件，如果此方法在&lt;code&gt;target&lt;/code&gt;中不存在，则假定当前浏览器为IE，并使用IE特有的方法。&lt;/p&gt;&lt;p&gt;咋一看这个函数似乎已经充分优化了。隐藏的性能问题在于每次函数调用时都做了重复工作，因为每次的检测过程都相同：看看指定方法是否存在。如果你假定&lt;code&gt;target&lt;/code&gt;唯一值就是DOM对象，而且用户不可能在加载完页面后奇迹般的改变浏览器，那么这次检测就是重复的。如果在第一次调用&lt;code&gt;addHandler()&lt;/code&gt;时就确定&lt;code&gt;addEventListener()&lt;/code&gt;是存在的，那么随后每次调用它都是存在的，每次调用同一个函数都重复相同的工作是一种浪费，有几种方法可以避免它。&lt;/p&gt;
+&lt;/div&gt;
+
+&lt;div class=&quot;p-section&quot;&gt;
+	&lt;h3&gt;延迟加载&lt;/h3&gt;
+	&lt;p&gt;第一种消除函数中的重复工作的方法是延迟加载(lazy loading)。延迟加载意味着信息被使用前不回做任何操作。比如前面的例子，在函数被调用前，没有必要判断改用哪个
+	方法去绑定或消除事件处理器。采用延迟加载的函数版本如下：&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&quot;javascript&quot;&gt;function addHandler(target,eventType,handler){
+
+   //复写现有函数
+   if(target.addEventListener){  //DOM2 events
+      addHandler = function(target,eventType,handler){
+	     target.addEventListener(eventType,handler,false);
+	  };
+   }
+   else {   //IE
+      addHandler= function(target,eventType,handler){
+	     target.attachEvent(&quot;on&quot;+eventType,handler);
+	  };
+   }
+   
+   //调用新函数
+   addHandler(target,eventType,handler);
+}
+
+function removeHandler(target,eventType,handler){
+   //复写现有函数
+   if(target.removeEventListener){
+      removeHandler=function(target,eventType,handler){
+	     target.removeEventListener(eventType,handler,false);
+	  };
+   }
+   else {  //IE
+      removeHandler=function(target,eventType,handler){
+	     target.detachEvent(&quot;on&quot;+eventType,handler);
+	  };
+   }
+   
+   //调用新函数
+   removeHandler(target,event,handler);
+}
+&lt;/code&gt;&lt;/pre&gt;	
+	&lt;p&gt;这两个函数实现了延迟加载模式。这两个方法在第一次调用时，会先检查并决定用哪种方法去绑定或取消绑定事件处理器。然后原始函数会被包含正确操作的新函数覆盖。最后一步调用新的函数，并传入原始参数。随后每次调用&lt;code&gt;addHandler()&lt;/code&gt;和&lt;code&gt;removeHandler()&lt;/code&gt;都不会再做检查，因为检测代码已经被新的函数覆盖。&lt;/p&gt;
+	&lt;p&gt;调用延迟加载函数时，第一次总会消耗较长的时间，因为它必须运行检测接着再调用另一个函数完成任务。但随后调用相同的函数，速度会更快，因为不需要再执行检测逻辑，当一个函数在页面中不会被立即调用时延迟加载是最好的选择。&lt;/p&gt;
+&lt;/div&gt;
+
+&lt;div class=&quot;p-section&quot;&gt;
+	&lt;h3&gt;条件预加载&lt;/h3&gt;
+	&lt;p&gt;除了延迟加载函数之外的另一种选择是：条件预加载(conditional advanceloading)，它会在脚本加载期间提前检测，而不会等到函数被调用。检测的操作依然只是一次，
+	只是它在过程中来的更早。例如&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&quot;javascript&quot;&gt;var addHandler=document.body.addEventListener?
+   function(target,eventType,handler){
+      target.addEventListener(eventType,handler,false);
+   }:
+   function(target,eventType,handler){
+      target.attachEvent(&quot;on&quot;+eventType,handler);
+   };
+   
+var removeHandler=document.body.removeEventListener?
+   function(target,eventType,handler){
+      target.removeEventListener(eventType,handler,false);
+   }:
+   function(target,eventType,handler){
+      target.detachEvent(&quot;on&quot;+eventType,handler);
+   }
+&lt;/code&gt;&lt;/pre&gt;	
+	&lt;p&gt;这个例子会先检测&lt;code&gt;addEventListener()&lt;/code&gt;和&lt;code&gt;removeEventListener()&lt;/code&gt;是否存在，然后根据结果指定选择最佳的函数。如果它们存在的话，三元运算符会返回DOM2 level函数，否则返回IE特有的函数，这样做的结果是所有对&lt;code&gt;addHandler()&lt;/code&gt;和&lt;code&gt;removeHandler()&lt;/code&gt;的调用都十分快，因为检测提前发生了。条件预加载确保所有函数调用消耗的时间相同。其代价是需要在脚本加载时检测，而不是加载后，预加载适合于一个函数马上就要被用到，而且在整个页面的生命周期中频繁出现的场合。&lt;/p&gt;
+&lt;/div&gt;
+
+</description>
+        <pubDate>Sat, 22 Oct 2016 00:00:00 +0800</pubDate>
+        <link>http://localhost:4000//javascript/2016/10/22/eventlistener</link>
+        <guid isPermaLink="true">http://localhost:4000//javascript/2016/10/22/eventlistener</guid>
+        
+        <category>Javascript</category>
+        
+        <category>性能优化</category>
+        
+        <category>读书笔记</category>
+        
+        
+        <category>Javascript</category>
+        
+      </item>
+    
+      <item>
+        <title>脚本的加载和执行</title>
+        <description>&lt;div class=&quot;p-section&quot;&gt;
+	&lt;h3&gt;脚本位置&lt;/h3&gt;
+	&lt;p&gt;HTML4规范指出&lt;code&gt;script&lt;/code&gt;标签可以放在HTML文档的&lt;code&gt;head&lt;/code&gt;或&lt;code&gt;body&lt;/code&gt;中，并且允许出现多次。按照惯例，&lt;code&gt;script&lt;/code&gt;标签用来加载出现在&lt;code&gt;head&lt;/code&gt;标签中的外链Javascript文件，挨着的&lt;code&gt;link&lt;/code&gt;标签用来加载外部css文件或者其他页面元信息。也就是说，把与样式和行为有关的脚本放在一起，并先加载它们，使得页面能够显示正确的外观和交互。如果在&lt;code&gt;head&lt;/code&gt;中加载3个Javascript文件和1个css文件，页面加载过程中脚本和样式文件的下载过程如下图所示。&lt;/p&gt;
+	&lt;div class=&quot;image&quot;&gt;&lt;img src=&quot;http://ffandii.github.io/Personal-blog/images/post/javascript/load.png&quot; width=&quot;660&quot; height=&quot;258&quot; /&gt;&lt;/div&gt;
+	&lt;p&gt;可以看见，这段代码实际上有十分严重的性能问题。第一个javascript文件开始下载，与此同时阻塞了页面其他文件的下载。此外从file1.js到file2.js开始下载前存在一个延时，这段时间正好是file1.js执行的过程。每个文件必须等到前一个文件下载并执行完成才会开始下载。在这些文件逐个下载的过程中，用户看到的是一片空白。这是当今大多数浏览器的行为特征。IE8、Firefox 3.5、Safari 4和chrome 2都允许并行下载javascript文件。这是个好消息，遗憾的是，javascript过程仍然会阻塞其他资源的下载，比如图片。尽管脚本的下载过程不会相互影响，但页面必须要等到所有的javascript文件下载并且执行完成才能继续执行，脚本阻塞仍然是一个问题。&lt;/p&gt;
+	&lt;p&gt;由于脚本会阻塞页面其他资源的下载，因此推荐将所有的&lt;code&gt;script&lt;/code&gt;标签尽可能放在&lt;code&gt;body&lt;/code&gt;标签的底部，以尽量减少对整个页面下载的影响。&lt;/p&gt;
+&lt;/div&gt;
+
+&lt;div class=&quot;p-section&quot;&gt;
+	&lt;h3&gt;动态脚本元素&lt;/h3&gt;
+	&lt;p&gt;通过文档对象模型，你几乎可以用javascript动态创建HTML中的所有内容。其根本在于&lt;code&gt;script&lt;/code&gt;标签与页面中的其他元素并无异常：都能通过DOM引用，都能在文档中移动、删除甚至被创建。用标准的DOM方法可以非常容易的创建一个新的&lt;code&gt;script&lt;/code&gt;元素：&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&quot;javascript&quot;&gt;var script=document.createElement(&quot;script&quot;);
+script.type=&quot;text/javascript&quot;;
+script.src=&quot;file1.js&quot;;
+document.getElementsByTagName(&quot;head&quot;)[0].appendChild(script);
+&lt;/code&gt;&lt;/pre&gt;
+	&lt;p&gt;这个新创建的&lt;code&gt;script&lt;/code&gt;元素加载了file1.js文件。文件在被添加到页面时开始下载。这种技术的重点在于：无论在何时启动下载，文件的下载和执行过程不会阻塞页面其他进程。使用动态脚本节点下载文件时，返回的代码通常会被立即执行。当脚本自执行时，这种机制运行正常。但是当代码只包含共页面其他脚本调用的接口时，就会带来问题。在这种情况下，你必须跟踪确保脚本加载完成并准备就绪。可以通过侦听事件来获得脚本加载完成时的状态。&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&quot;javascript&quot;&gt;var script=document.createElement(&quot;script&quot;);
+script.type=&quot;text/javascript&quot;;
+
+//Firefox,Opera,Chrome,Safari 3+
+script.onload=function(){
+	alert(&quot;Script loaded&quot;);
+};
+
+script.src=&quot;file1.js&quot;;
+document.getElementsByTagName(&quot;head&quot;)[0].appendChild(script);
+&lt;/code&gt;&lt;/pre&gt;
+
+	&lt;p&gt;IE支持另一种实现方式，它会触发一个readystatechange事件。&lt;code&gt;script&lt;/code&gt;元素提供一个readystate属性，它的值在外链文件的下载过程中的不同阶段会发生变化，该属性有五种取值。在大多数情况下，你需要使用一个单一的方法来动态的加载javascript文件，下面的函数及方法封装了标准及IE特有的实现方法：&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&quot;javascript&quot;&gt;function loadScript(url,callback){
+   var script=document.createElement(&quot;script&quot;);
+   script.type=&quot;text/javascript&quot;;
+   
+   if(script.readyState){   //IE
+      script.onreadystatechange=function(){
+	     if(script.readyState==&quot;loaded&quot;||script.readyState==&quot;complete&quot;){
+		    script.onreadystatechange=null;
+			callback();
+		 }
+	  }
+   }
+   else {  //其他浏览器
+      script.onload=function(){
+	     callback();
+	  }
+   }
+   
+   script.src=url;
+   document.getElementsByTagName(&quot;head&quot;)[0].appendChild(script);
+}
+&lt;/code&gt;&lt;/pre&gt;
+	&lt;p&gt;如果需要的话，你可以尽可能多的加载javascript文件到页面上，但要确保考虑了文件的加载顺序。&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&quot;javascript&quot;&gt;loadScript(&quot;file1.js&quot;,function(){
+   loadScript(&quot;file2.js&quot;,function(){
+      loadScript(&quot;file3.js&quot;,function(){
+	     alert(&quot;All files loaded&quot;);
+	  });
+   });
+});
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;div class=&quot;p-section&quot;&gt;
+   &lt;h3&gt;&lt;code&gt;XMLHttpRequest&lt;/code&gt;脚本注入&lt;/h3&gt;
+   &lt;p&gt;另一种无阻塞加载脚本的方法是使用XHR对象获取脚本并注入页面中。此技术会先创建一个XHR对象，然后用它下载javascript文件，最后通过创建&lt;code&gt;script&lt;/code&gt;元素
+   将代码注入页面中。下面就是一个简单的例子：&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&quot;javascript&quot;&gt;var xhr=new XMLHttpRequest();
+xhr.open(&quot;get&quot;,&quot;file1.js&quot;,true);
+xhr.onreadystatechange=function(){
+   if(xhr.readyState==4){
+      if(xhr.status&amp;gt;=200&amp;amp;&amp;amp;xhr.status&amp;lt;300||xhr.status==304){
+	     var script=document.createElement(&quot;script&quot;);
+		 script.type=&quot;text/javascript&quot;;
+		 script.text=xhr.responseText;
+		 document.body.appendChild(script);
+	  }
+   }
+}
+xhr.send(null);
+&lt;/code&gt;&lt;/pre&gt;
+	&lt;p&gt;这种方法的主要优点是，你可以下载javascript代码但不立即执行。由于代码是在&lt;code&gt;script&lt;/code&gt;标签之外返回的，因此它下载后不会立即执行，
+	这意味着你可以把脚本的执行推迟到你准备好的时候，另一个优点是同样的代码在所有主流浏览器中无一例外都能正常工作。这种方法的主要局限性是javascript
+	文件必须与所请求的页面处于相同的域。因此大型的Web应用通常不会采用XHR脚本注入技术。&lt;/p&gt;
+&lt;/div&gt;
+
+&lt;div class=&quot;p-section&quot;&gt;
+	&lt;h3&gt;LazyLoad类库&lt;/h3&gt;
+	&lt;p&gt;Yahoo!Search的工程师Ryan Grove 创建了一个更为通用的延迟加载工具：&lt;a href=&quot;http://github.com/rgrove/lazyload&quot;&gt;LazyLoad&lt;/a&gt;。
+	LazyLoad是loadScript()函数的增强版，该文件压缩后只有1.5KB，支持同时下载多个javascript文件，并能保证在浏览器中以正确的顺序执行。
+	要加载多个javascript文件，只需给LazyLoad.js传入一个url数组：&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&quot;javascript&quot;&gt;&amp;lt;script type=&quot;text/javascript&quot; src=&quot;lazyload-min.js&quot;&amp;gt;&amp;lt;/script&amp;gt;
+&amp;lt;script type=&quot;text/javascript&quot;&amp;gt;
+   LazyLoad.js([&quot;first-file.js&quot;,&quot;the-rest.js&quot;],function(){
+      Application.init();
+   });
+&amp;lt;/script&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+</description>
+        <pubDate>Thu, 20 Oct 2016 00:00:00 +0800</pubDate>
+        <link>http://localhost:4000//javascript/2016/10/20/loadjs</link>
+        <guid isPermaLink="true">http://localhost:4000//javascript/2016/10/20/loadjs</guid>
+        
+        <category>性能</category>
+        
+        <category>Javascript</category>
+        
+        <category>读书笔记</category>
+        
+        
+        <category>Javascript</category>
+        
+      </item>
+    
+      <item>
+        <title>二叉搜索树</title>
+        <description>&lt;div class=&quot;p-section&quot;&gt;
+	&lt;h3&gt;树的定义&lt;/h3&gt;
+	&lt;p&gt;树是由一组以边连接的节点组成，边描述了各节点之间的关系。一棵树最上面的节点称为根节点，如果一个节点下面连接多个节点，那么该节点称为父节点，它下面的节点称为子节点。一个节点可以有0个、1个或多个子节点。没有任何子节点的节点称为叶子节点。沿着一组特定的边，可以从一个节点走到另一个与它不直接相连的节点，从一个节点到另一个节点的这一组边称为路径，图中用虚线表示。以某种特定的顺序访问树中所有的节点称为树的遍历。树可以分为几个层次，根节点是第0层，它的子节点是第1层，子节点的子节点是第2层，以此类推。树中任何一层的节点可以都看做是子树的根，该子树包含根节点的子节点，子节点的子节点等。我们定义树的层数就是树的深度。&lt;/p&gt;
+	&lt;div class=&quot;image&quot;&gt;&lt;img src=&quot;http://ffandii.github.io/Personal-blog/images/post/ds&amp;amp;al/tree1.png&quot; width=&quot;621&quot; height=&quot;429&quot; /&gt;&lt;/div&gt;
+	&lt;p&gt;二叉树每个节点的子节点不允许超过两个，一个父节点的两个子节点分别称为左节点和右节点。在一些二叉树的实现中，左节点包含一组特定的值，右节点包含另一组特定的值。&lt;/p&gt;
+&lt;/div&gt;
+
+&lt;div class=&quot;p-section&quot;&gt;
+	&lt;h3&gt;实现二叉搜索树&lt;/h3&gt;
+	&lt;p&gt;二叉搜索树由节点组成，所以我们要定义的第一个对象是&lt;code&gt;Node&lt;/code&gt;类。&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&quot;javascript&quot;&gt;function Node(data,left,right){
+   this.data=data;
+   this.count=1;  //同一记录出现的次数
+   this.left=left;
+   this.right=right;
+   this.show=show;
+}
+
+function show(){    //显示当前节点
+   return this.data+&quot;  &quot;+this.count;
+}
+&lt;/code&gt;&lt;/pre&gt;
+	&lt;p&gt;&lt;code&gt;Node&lt;/code&gt;对象既保存数据，也保存和其他节点的链接（&lt;code&gt;left&lt;/code&gt;和&lt;code&gt;right&lt;/code&gt;），&lt;code&gt;show()&lt;/code&gt;方法用来显示保存在节点中的数据。现在可以创建一个类，用来表示二叉查找树（&lt;code&gt;BST&lt;/code&gt;）。我们让类只包含一个数据成员：一个表示二叉查找树根节点的&lt;code&gt;Node&lt;/code&gt;对象。该类的构造函数将根节点初始化为&lt;code&gt;null&lt;/code&gt;，以此创建一个空节点。&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&quot;javascript&quot;&gt;function BST(){
+   this.root=null;
+   this.insert=insert;      //插入
+   this.inOrder=inOrder;    //中序遍历
+   this.preOrder=preOrder;  //先序遍历
+   this.postOrder=postOrder;  //后序遍历
+   this.getMin=getMin;  //返回值最小的节点
+   this.getMax=getMax;  //返回值最大的节点
+   this.find=find;  //返回二叉查找树上的查找结果
+   this.remove=remove;
+   this.removeNode=removeNode;  //删除节点
+}
+&lt;/code&gt;&lt;/pre&gt;
+	&lt;p&gt;&lt;code&gt;BST&lt;/code&gt;类的方法如下：&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&quot;javascript&quot;&gt;    function insert(data){
+        var n=new Node(data,null,null);
+        if(this.root==null){
+            this.root=n;
+        }
+        else {
+            var current=this.root;
+            var parent;     //parent用来保存当前节点的父节点
+            while(true){
+                parent=current;
+                if(data&amp;lt;current.data){
+                    current=current.left;
+                    if(current==null){
+                        parent.left=n;
+                        break
+                    }
+                }
+                else if(data&amp;gt;current.data){
+                    current=current.right;
+                    if(current==null){
+                        parent.right=n;
+                        break;
+                    }
+                }
+                else {
+                    current.count++;
+                    break;
+                }
+            }
+        }
+    }
+
+    //在二叉查找树上进行查找  查找给定值 查找最小值 查找最大值
+    function getMin(node){
+        var current=node;
+        while(current.left!=null){
+            current=current.left;
+        }
+        return current.data;
+    }
+
+    function getMax(node){
+        var current=node;
+        while(current.right!=null){
+            current=current.right;
+        }
+        return current.data;
+    }
+
+    function find(data){
+        var current=this.root;
+        while(current!=null){
+            if(current.data==data){
+                return current;
+            }
+            else if(current.data&amp;lt;data){
+                current=current.right;
+            }
+            else {
+                current=current.left;
+            }
+        }
+        return null;
+    }
+
+    function remove(data){
+        this.root=removeNode(this.root,data);
+    }
+
+    function removeNode(node,data){
+        if(node==null){
+            return null;
+        }
+
+        if(data==node.data){
+            if(node.left==null&amp;amp;&amp;amp;node.right==null){
+                return null;
+            }
+            //没有左子节点的节点
+            if(node.left==null){
+                return node.right;
+            }
+            //没有右子节点的节点
+            if(node.right==null){
+                return node.left;
+            }
+
+            //有两个子节点的节点
+            var tmpNode=getMin(node.right);
+            node.data=tmpNode;
+            node.right=removeNode(node.right,tmpNode);
+            return node;
+        }
+        else if(data&amp;lt;node.data){
+            node.left=removeNode(node.left,data);
+            return node;
+        }
+        else {
+            node.right=removeNode(node.right,data);
+            return node;  //当前节点返回后，即为上一层节点所指
+        }
+    }
+
+    //我们还需要有能力遍历BST，这样就可以按照不同的顺序显示节点上的数据
+    function inOrder(node){
+        if(node!=null){
+            inOrder(node.left);
+            document.write(node.show()+&quot;\n&quot;);
+            inOrder(node.right);
+        }
+    }
+
+    function preOrder(node){
+        if(node!=null){
+            document.write(node.show()+&quot;\n&quot;);
+            preOrder(node.left);
+            preOrder(node.right);
+        }
+    }
+
+    function postOrder(node){
+        if(node!=null){
+            postOrder(node.left);
+            postOrder(node.right);
+            document.write(node.show()+&quot;\n&quot;);
+        }
+    }
+
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+</description>
+        <pubDate>Tue, 18 Oct 2016 00:00:00 +0800</pubDate>
+        <link>http://localhost:4000//%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/2016/10/18/search-tree</link>
+        <guid isPermaLink="true">http://localhost:4000//%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/2016/10/18/search-tree</guid>
+        
+        <category>数据结构</category>
+        
+        <category>Javascript</category>
+        
+        <category>读书笔记</category>
+        
+        
+        <category>数据结构与算法</category>
+        
+      </item>
+    
+      <item>
+        <title>私有变量</title>
+        <description>&lt;div class=&quot;p-section&quot;&gt;
+	&lt;h3&gt;模仿块级作用域&lt;/h3&gt;
+	&lt;p&gt;Javascript中没有块级作用域的概念，这意味着在块语句（如循环语句）中定义的变量实际上是包含在函数中而非语句所创建的，从它有定义开始，就可以在在函数内部随处访问它。Javascript从来不会告诉你是否多次声明了同一个变量，后面的声明会覆盖掉前面的相同声明。匿名函数可以用来模仿块级作用域避免这个问题。&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&quot;javascript&quot;&gt;(function(){
+   //这里是块级作用域
+})();
+&lt;/code&gt;&lt;/pre&gt;
+	&lt;p&gt;将函数声明包含在圆括号中，表示它实际上是一个函数表达式，而紧随其后的另一对圆括号会立即调用这个函数。可能感到奇怪的是左边的一对圆括号，去掉后，Javascript会把&lt;code&gt;function&lt;/code&gt;关键字作为一个函数声明的开始，而函数声明后面是不能加圆括号的，这样的代码会导致错误。无论在什么地方，如果只是临时需要一些变量的话，就可以包含在块级作用域中，在其中定义的任何变量，都会在执行结束时被销毁。这种技术经常在全局作用域中被用在函数外部，从而限制向全局作用域中添加过多的变量和函数，一般来说我们都应该尽量减少向全局作用域中添加过多的变量和函数。&lt;/p&gt;
+&lt;/div&gt;
+
+&lt;div class=&quot;p-section&quot;&gt;
+	&lt;h3&gt;静态私有变量&lt;/h3&gt;
+	&lt;p&gt;任何在函数中定义的变量，都可以认为是私有变量，因而不能再函数的外部访问这些变量。如果在这个函数内部创建一个闭包，那么闭包通过自己的作用域链也能够访问到这些变量。而利用这一点，就可以创建用于访问私有变量的公有方法，我们把有权访问私有变量和私有函数的公有方法统称为特权方法。&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&quot;javascript&quot;&gt;(function(){
+
+   //私有变量和私有函数
+   var privateVariable=10;
+   
+   function privateFunction(){
+      return false;
+   }
+   
+   //构造函数
+   myObject=function(){
+   };
+   
+   //公有和特权方法
+   myObject.prototype.publicMethod=function(){
+      privateVariable++;
+      return privateFunction();
+   };
+})();
+&lt;/code&gt;&lt;/pre&gt;
+
+	&lt;p&gt;这个模式创建了一个私有作用域，在私有作用域中，首先定义了私有变量和私有函数，然后又定义了构造函数及其公有方法。公有方法是在原型上定义的，这一点体现了典型的原型模式。需要注意的是，这个模式在定义构造函数时并没有使用函数声明，而是使用了函数表达式。函数声明只能创建局部函数，但这并不是我们所需要的，出于同样的原因，在声明&lt;code&gt;myObject&lt;/code&gt;关键字时没有使用&lt;code&gt;var&lt;/code&gt;关键字，这样&lt;code&gt;myObject&lt;/code&gt;就成了一个全局变量，能够在私有作用域之外被访问到。&lt;/p&gt;
+&lt;/div&gt;
+
+&lt;div class=&quot;p-section&quot;&gt;
+	&lt;h3&gt;模块模式&lt;/h3&gt;
+	&lt;p&gt;前面的模式是用于为自定义类型创建私有变量和特权方法的，而模块模式则是为单例创建私有变量和特权方法的，所谓单例，指的是只有一个实例的对象。语法形式如下：&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&quot;javascript&quot;&gt;var singleton=function(){
+   
+   //私有变量和私有函数
+   var privateVariable=10;
+   function privateFunction(){
+      return false;
+   }
+   
+   //特权方法
+   return {
+      publicProperty: true,
+      publicMethod: function(){
+         privateVariable++;
+         return privateFunction();
+      }
+   }
+}();
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;/div&gt;
+
+&lt;div class=&quot;p-section&quot;&gt;
+	&lt;h3&gt;增强的模块模式&lt;/h3&gt;
+	&lt;p&gt;有人进一步改进了模块模式，即在返回对象之前加入对其增强的代码。这种增强的模块模式适合那些单例必须是某种类型的实例，同时还必须添加某些属性和（或）方法对其加以增强的情况。来看下面的例子。&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&quot;javascript&quot;&gt;var singleton=function(){
+   //私有变量和私有函数
+   var privateVariable=10;
+   function privateFunction(){
+      return false;
+   }
+   
+   //创建对象
+   var object=new CustomeType();
+   
+   //添加特权方法
+   object.publicProperty=true;
+   onject.publicMethod=function(){
+      privateVariable++;
+      return privateFunction();
+   }
+   
+   //返回这个对象
+   return object;
+}();
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+</description>
+        <pubDate>Mon, 17 Oct 2016 00:00:00 +0800</pubDate>
+        <link>http://localhost:4000//javascript/2016/10/17/private-variables</link>
+        <guid isPermaLink="true">http://localhost:4000//javascript/2016/10/17/private-variables</guid>
+        
+        <category>Javascript</category>
+        
+        <category>读书笔记</category>
+        
+        
+        <category>Javascript</category>
+        
+      </item>
+    
+      <item>
+        <title>函数表达式及闭包</title>
+        <description>&lt;div class=&quot;p-section&quot;&gt;
+    &lt;h3&gt;① 函数表达式：&lt;/h3&gt;
+    &lt;p&gt;
+        函数表达式是JavaScript 中的一个既强大又容易令人困惑的特性。定义函数的方式有两种：一种是函数声明，另一种就是函数表达式。函数声明的语法是这样的。
+    &lt;/p&gt;
+    &lt;pre&gt;
+    &lt;code class=&quot;javascript&quot;&gt;        function functionName(arg0, arg1, arg2) {
+        //函数体
+        }&lt;/code&gt;
+    &lt;/pre&gt;
+    &lt;p&gt;
+        关于函数声明，它的一个重要特征就是函数声明提升（function declaration hoisting），意思是在执行
+        代码之前会先读取函数声明。这就意味着可以把函数声明放在调用它的语句后面。
+    &lt;/p&gt;
+    &lt;pre&gt;
+        &lt;code class=&quot;javascript&quot;&gt;        sayHi();
+        function sayHi(){
+        alert(&quot;Hi!&quot;);
+        }&lt;/code&gt;
+    &lt;/pre&gt;
+&lt;/div&gt;
+&lt;div class=&quot;p-section&quot;&gt;
+    &lt;h3&gt;② 闭包：&lt;/h3&gt;
+    &lt;p&gt;
+        闭包是指有权访问另一个函数作用域中的变量的函数。创建闭包的常见方式，就是在一个函数内部创建另一个函数。创建闭包的常见方式，就是在一个函数内部创建另一个函数。如下所示：
+    &lt;/p&gt;
+    &lt;pre&gt;
+        &lt;code class=&quot;javascript&quot;&gt;                function createComparisonFunction(propertyName) {
+                return function(object1, object2){
+                    var value1 = object1[propertyName];
+                    var value2 = object2[propertyName];
+                    if (value1 &lt; value2){
+                        return -1;
+                    } else if (value1 &gt; value2){
+                        return 1;
+                    } else {
+                        return 0;
+                    }
+                };
+            }&lt;/code&gt;
+    &lt;/pre&gt;
+    &lt;p&gt;
+        在这个例子中，突出的那两行代码是内部函数（一个匿名函数）中的代码，这两行代码访问了外部
+        函数中的变量propertyName。即使这个内部函数被返回了，而且是在其他地方被调用了，但它仍然可
+        以访问变量propertyName。之所以还能够访问这个变量，是因为内部函数的作用域链中包含
+        createComparisonFunction()的作用域。
+    &lt;/p&gt;
+&lt;/div&gt;</description>
+        <pubDate>Sat, 15 Oct 2016 00:00:00 +0800</pubDate>
+        <link>http://localhost:4000//javascript/2016/10/15/closure</link>
+        <guid isPermaLink="true">http://localhost:4000//javascript/2016/10/15/closure</guid>
+        
+        <category>Javascript</category>
+        
+        <category>读书笔记</category>
+        
+        
+        <category>Javascript</category>
+        
+      </item>
+    
+      <item>
+        <title>执行环境及作用域</title>
+        <description>&lt;div class=&quot;p-section&quot;&gt;
+    &lt;h3&gt;① 执行环境：&lt;/h3&gt;
+    &lt;p&gt;
+        执行环境(execution context)是 javascript 中最为重要的一个概念。执行环境定义了变量或函数有权访问的其他数据，决定了它们各自的行为。每个执行环境都有一个与之关联的变量对象(variable object)，环境中定义的所有变量和函数都保存在这个对象中。我们编写的代码无法访问这个对象，但解析器在处理数据时会在后台使用它。
+    &lt;/p&gt;
+    &lt;p&gt;
+        全局执行环境是最外围的一个执行环境。根据 ECMAScript 实现所在的宿主环境不同，表示执行环境的对象也不一样。在web浏览器中，全局执行环境被认为是 window 对象，因此所有全局变量和函数都是作为 window 对象的属性和方法创建的。某个执行环境中的所有代码执行完毕后，该环境会被销毁，保存在其中的变量和函数定义也随之销毁。全局执行环境则在应用程序退出如关闭网页或浏览器时才会被销毁。
+    &lt;/p&gt;
+    &lt;p&gt;
+        每个函数都有自己的执行环境(局部环境)。当执行流进入一个函数时，函数的环境会被推入一个环境栈中，而在函数执行后，栈将其环境弹出，把控制权返回给之前的执行环境，ECMAScript 程序的执行流正是由这个方便的机制控制着。
+    &lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;p-section&quot;&gt;
+    &lt;h3&gt;② 作用域：&lt;/h3&gt;
+    &lt;p&gt;
+        当代码在一个环境中执行时，会创建变量对象的一个作用域链(scope chain)。作用域链的用途是保证对执行环境有权访问的所有变量和函数的有序访问。作用域链的前端，始终是当前执行的代码所在环境的变量对象。如果这个环境是函数，则将其活动函数(activation object)作为变量对象，活动对象在最开始只包含一个变量，即 arguments 对象(这个对象在全局执行环境中是不存在的)。作用域链中的下一个变量对象来自包含(外部)环境，而再下一个变量对象则来自下一个包含环境。这样，一直延续到全局执行环境，全局执行环境中的变量对象始终都是作用域链中的最后一个对象。
+    &lt;/p&gt;
+    &lt;p&gt;
+        标识符解析是沿着作用域链一级一级地搜索标识符的过程。搜索过程始终从作用域链的前端开始，然后逐级的向后回溯，直到找到标识符为止。如果找不到标识符，通常会导致错误的发生。请看下面的示例代码：
+    &lt;/p&gt;
+    &lt;pre&gt;
+        &lt;code class=&quot;javascript&quot;&gt;            var color=&quot;blue&quot;;
+            function changeColor(){
+               var anotherColor = &quot;red&quot;;
+               function swapColors(){
+                  var tempColor = anotherColor;
+                  anotherColor = color;
+                  color = tempColor;
+                  // 这里可以访问 color、 anotherColor 和 tempColor
+               }
+              // 这里可以访问 color 和 anotherColor，但不能访问 tempColor
+               swapColors();
+            }
+            // 这里只能访问 color
+            changeColor();&lt;/code&gt;
+    &lt;/pre&gt;
+    &lt;p&gt;
+        以上代码共涉及 3 个执行环境：全局环境、 changeColor() 的局部环境和 swapColors() 的局部环境。全局环境中有一个变量 color 和一个函数 changeColor() 。 changeColor() 的局部环境中有一个名为 anotherColor 的变量和一个名为 swapColors() 的函数，但它也可以访问全局环境中的变量 color。 swapColors() 的局部环境中有一个变量 tempColor，该变量只能在这个环境中访问到。无论全局环境还是 changeColor() 的局部环境都无权访问 tempColor。然而，在 swapColors() 内部则可以访问其他两个环境中的所有变量，因为那两个环境是它的父执行环境。
+    &lt;/p&gt;
+&lt;/div&gt;
+</description>
+        <pubDate>Fri, 30 Sep 2016 00:00:00 +0800</pubDate>
+        <link>http://localhost:4000//javascript/2016/09/30/execution-and-scope</link>
+        <guid isPermaLink="true">http://localhost:4000//javascript/2016/09/30/execution-and-scope</guid>
+        
+        <category>Javascript</category>
+        
+        <category>读书笔记</category>
+        
+        
+        <category>Javascript</category>
+        
+      </item>
+    
+  </channel>
+</rss>

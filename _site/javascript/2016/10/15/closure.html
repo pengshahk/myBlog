@@ -1,0 +1,181 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <title>彭莎的博客</title>
+    <meta name="description" content="定义函数的方式有两种：一种是函数声明，另一种就是函数表达式。">
+    <meta name="author" content="">
+
+    <!-- Enable responsive viewport -->
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!-- Fav and touch icons -->
+    <link rel="shortcut icon" href="../../../../../assets/favicon.ico">
+
+    <!--<link rel="stylesheet" href="css/main.css">-->
+    <link rel="stylesheet" href="../../../../../css/post.css">
+
+    <!-- code custome -->
+    <link rel="stylesheet" href="../../../../../css/codeStyles/atom-one-dark.css">
+    <script src="http://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.9.0/highlight.min.js"></script>
+    <script type="text/javascript">
+        hljs.initHighlightingOnLoad();
+    </script>
+
+    <!-- Modernizr -->
+    <script src="../../../../../js/vendor/modernizr-2.8.3.min.js"></script>
+    <!-- Respond.js for IE 8 or less only -->
+    <!--[if (lt IE 9) & (!IEMobile)]>
+    <script src="../../../../../js/vendor/respond.min.js"></script>
+    <![endif]-->
+
+    <!-- atom & rss feed -->
+  <!--  <link href="" type="application/atom+xml" rel="alternate" title="Sitewide ATOM Feed">
+    <link href="" type="application/rss+xml" rel="alternate" title="Sitewide RSS Feed"-->>
+
+</head>
+<body>
+<!--[if lt IE 8]>
+<p class="browserupgrade">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
+<![endif]-->
+<header role="banner">
+    <nav role="navigation" class="navbar navbar-static-top navbar-default">
+        <div class="container-fluid">
+            <!-- <div class="row">-->
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" href="index.html"><img src="../../../../../assets/logo.png" alt="彭莎" width="180"></a>
+            </div>
+        </div>
+        <div class="col-lg-9 right">
+            <div class="navbar-collapse collapse">
+                <ul class="nav navbar-nav navbar-right">
+                    <li class="active"><a href="../../../../../index.html"  onmouseover="$(this).tooltip('show')"  data-toggle="tooltip" data-placement="bottom" title="Home"><i class="icon fa fa-home"></i><span> 首页</span></a></li>
+                    <li ><a href="../../../../../me.html"  onmouseover="$(this).tooltip('show')" data-toggle="tooltip" data-placement="bottom" title="About"><i class="icon fa fa-user"></i> <span> 关于我 </span></a></li>
+                    <li ><a href="../../../../../shuo.html"  onmouseover="$(this).tooltip('show')" data-toggle="tooltip" data-placement="bottom" title="Gossip"><i class="icon fa fa-pencil"></i> <span> 闲言碎语 </span></a></li>
+                    <li><a href="../../../../../footprint.html"  onmouseover="$(this).tooltip('show')" data-toggle="tooltip" data-placement="bottom" title="Footprint"><i class="icon fa fa-plane"></i> <span> 足迹 </span></a></li>
+                    <li><a href="#"  onmouseover="$(this).tooltip('show')" data-toggle="tooltip" data-placement="bottom" title="Search"><i class="icon fa fa-search"></i> <span> 搜索 </span></a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="col-lg-1">
+
+        </div>
+        </div>
+        <!--</div>-->
+    </nav>
+</header>
+<main class="post-contents">
+    <div class="container-fluid">
+        <div class="col-lg-2 col-md-2 col-sm-1">
+        </div>
+        <div class="col-lg-8 col-md-8 col-sm-10">
+            <div class="post-content">
+                <div class="post-header">
+                    <h1>函数表达式及闭包</h1>
+                </div>
+                <div class="content">
+                   <div class="p-section">
+    <h3>① 函数表达式：</h3>
+    <p>
+        函数表达式是JavaScript 中的一个既强大又容易令人困惑的特性。定义函数的方式有两种：一种是函数声明，另一种就是函数表达式。函数声明的语法是这样的。
+    </p>
+    <pre>
+    <code class="javascript">        function functionName(arg0, arg1, arg2) {
+        //函数体
+        }</code>
+    </pre>
+    <p>
+        关于函数声明，它的一个重要特征就是函数声明提升（function declaration hoisting），意思是在执行
+        代码之前会先读取函数声明。这就意味着可以把函数声明放在调用它的语句后面。
+    </p>
+    <pre>
+        <code class="javascript">        sayHi();
+        function sayHi(){
+        alert("Hi!");
+        }</code>
+    </pre>
+</div>
+<div class="p-section">
+    <h3>② 闭包：</h3>
+    <p>
+        闭包是指有权访问另一个函数作用域中的变量的函数。创建闭包的常见方式，就是在一个函数内部创建另一个函数。创建闭包的常见方式，就是在一个函数内部创建另一个函数。如下所示：
+    </p>
+    <pre>
+        <code class="javascript">                function createComparisonFunction(propertyName) {
+                return function(object1, object2){
+                    var value1 = object1[propertyName];
+                    var value2 = object2[propertyName];
+                    if (value1 < value2){
+                        return -1;
+                    } else if (value1 > value2){
+                        return 1;
+                    } else {
+                        return 0;
+                    }
+                };
+            }</code>
+    </pre>
+    <p>
+        在这个例子中，突出的那两行代码是内部函数（一个匿名函数）中的代码，这两行代码访问了外部
+        函数中的变量propertyName。即使这个内部函数被返回了，而且是在其他地方被调用了，但它仍然可
+        以访问变量propertyName。之所以还能够访问这个变量，是因为内部函数的作用域链中包含
+        createComparisonFunction()的作用域。
+    </p>
+</div>
+                </div>
+            </div>
+            <div class="post-part2">
+                <!-- 多说评论框 start -->
+                <div class="ds-thread" data-thread-key="http://localhost:4000/javascript/2016/10/15/closure" data-title="函数表达式及闭包" data-url="http://localhost:4000/javascript/2016/10/15/closure"></div>
+                <!-- 多说评论框 end -->
+                <!-- 多说公共JS代码 start (一个网页只需插入一次) -->
+                <script type="text/javascript">
+                    var duoshuoQuery = {short_name:"ycps"};
+                    (function() {
+                        var ds = document.createElement('script');
+                        ds.type = 'text/javascript';ds.async = true;
+                        ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+                        ds.charset = 'UTF-8';
+                        (document.getElementsByTagName('head')[0]
+                        || document.getElementsByTagName('body')[0]).appendChild(ds);
+                    })();
+                </script>
+                <!-- 多说公共JS代码 end -->
+            </div>
+
+            <div class="col-lg-2 col-md-2 col-sm-1">
+            </div>
+        </div>
+    </div>
+</main>
+<footer role="contentinfo">
+    <div class="row">
+        <ul class="social">
+            <li><a href="http://weibo.com/u/2488284837?refer_flag=1001030101_&is_all=1"><span class="icon fa fa-weibo"></span> 微博</a> </li>
+            <li>© 2016 <span>❤</span> 彭莎</li>
+            <li><a href="https://github.com/pengshahk"><span class="icon fa fa-github"></span> GitHub</a></li>
+        </ul>
+    </div>
+</footer>
+<script src="../../../../../js/vendor/jquery-1.12.0.min.js"></script>
+<script src="../../../../../js/plugins.js"></script>
+<script src="../../../../../js/color-animation.js"></script>
+<script src="../../../../../js/post.js"></script>
+<div class="search-tool">
+    <input type="text" class="form-control search-content" id="search-content" placeholder="文章标题 日期 标签" >
+    <div class="close">
+        <span class="icon fa fa-times-circle-o"></span>
+    </div>
+</div>
+<script src="../../../../../js/bootstrap3-typeahead.min.js"></script>
+<script src="../../../../../js/post-search.js"></script>
+</body>
+
+
+</html>

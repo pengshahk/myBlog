@@ -1,0 +1,58 @@
+---
+layout: post
+title: "函数表达式及闭包"
+description: "定义函数的方式有两种：一种是函数声明，另一种就是函数表达式。"
+category: Javascript
+tags: [Javascript,读书笔记]
+---
+
+
+
+<div class="p-section">
+    <h3>① 函数表达式：</h3>
+    <p>
+        函数表达式是JavaScript 中的一个既强大又容易令人困惑的特性。定义函数的方式有两种：一种是函数声明，另一种就是函数表达式。函数声明的语法是这样的。
+    </p>
+    <pre>
+    <code class="javascript">        function functionName(arg0, arg1, arg2) {
+        //函数体
+        }</code>
+    </pre>
+    <p>
+        关于函数声明，它的一个重要特征就是函数声明提升（function declaration hoisting），意思是在执行
+        代码之前会先读取函数声明。这就意味着可以把函数声明放在调用它的语句后面。
+    </p>
+    <pre>
+        <code class="javascript">        sayHi();
+        function sayHi(){
+        alert("Hi!");
+        }</code>
+    </pre>
+</div>
+<div class="p-section">
+    <h3>② 闭包：</h3>
+    <p>
+        闭包是指有权访问另一个函数作用域中的变量的函数。创建闭包的常见方式，就是在一个函数内部创建另一个函数。创建闭包的常见方式，就是在一个函数内部创建另一个函数。如下所示：
+    </p>
+    <pre>
+        <code class="javascript">                function createComparisonFunction(propertyName) {
+                return function(object1, object2){
+                    var value1 = object1[propertyName];
+                    var value2 = object2[propertyName];
+                    if (value1 < value2){
+                        return -1;
+                    } else if (value1 > value2){
+                        return 1;
+                    } else {
+                        return 0;
+                    }
+                };
+            }</code>
+    </pre>
+    <p>
+        在这个例子中，突出的那两行代码是内部函数（一个匿名函数）中的代码，这两行代码访问了外部
+        函数中的变量propertyName。即使这个内部函数被返回了，而且是在其他地方被调用了，但它仍然可
+        以访问变量propertyName。之所以还能够访问这个变量，是因为内部函数的作用域链中包含
+        createComparisonFunction()的作用域。
+    </p>
+</div>

@@ -1,0 +1,43 @@
+.banner{
+  height: 200px;
+  margin:0;
+  padding:0;
+  position:relative;
+  background: url(../assets/sg1600.png) center center no-repeat;
+  overflow: hidden;
+  -webkit-background-size: cover;
+  -moz-background-size: cover;
+  -o-background-size: cover;
+  background-size:cover;
+  @media (max-width: @screen-md-max){
+    background: url(../assets/sg1200.png) center center no-repeat;
+  }
+  @media (max-width: @screen-sm-max){
+   background: url(../assets/sg992.png) center center no-repeat;
+  }
+  @media (max-width: @screen-xs-max){
+    background: url(../assets/sg768.png) center center no-repeat;
+  }
+  .texts{
+
+    color: hotpink;
+    >p{
+      //font-family: Verdana, Geneva, sans-serif;
+      font-family:"Trebuchet MS", Arial, Helvetica, sans-serif;
+      font-size: 20px;
+      //text-shadow: 1px 1px 0 darken(hotpink, 1%), 2px 2px 8px darken(hotpink, 2%);
+      text-shadow: 1px 1px 0 rgba(255, 255, 255, 0.8), 2px 2px 3px rgba(180, 151, 151, 0.3);
+      //text-shadow:  1px 0 0 darken(hotpink,2%);
+      &:nth-child(1){
+        position: absolute;
+        top: 40%;
+        right:15%;
+      }
+      &:nth-child(2){
+        position: absolute;
+        top: 55%;
+        right:10%;
+      }
+    }
+  }
+}

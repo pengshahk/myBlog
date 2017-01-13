@@ -1,11 +1,28 @@
 $(document).ready(function(){
-    //------------------------------实现标题栏----------------------//
-  /* $('.navbar-nav > li').click(function(){
-      $('.active').removeClass('active');
-      $(this).addClass('active');
-   });*/
+    //-------------------------------导航栏提示框------------------------------//
+    var delay={"show": 800, "hide": 800};
+    var selector=$('.navbar-nav > li');
+    $('[data-toggle="tooltip"]').tooltip(delay,selector);
+    //------------------------------实现博客标题的颜色渐变效果----------------------//
+    $('div.cd-timeline-content > h2.title').on('mouseenter mouseleave',function(event){
+        if (event.type == 'mouseenter') {
+            $(this).children().stop().animate({
+                color: "#ff69b4"
+            }, {
+                duration: 400
+            });
+        }
 
-  //------------------------------实现音乐栏----------------------//
+        else {
+            $(this).children().stop().animate({
+                color: "#777"
+            }, {
+                duration: 700
+            });
+        }
+    });
+
+    //------------------------------实现音乐栏----------------------//
     $('.musicpictrue').addClass('rotate');
   /*var $audio=document.getElementById("audio");
 

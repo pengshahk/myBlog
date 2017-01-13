@@ -2,11 +2,8 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="23d11c83-19ae-4381-b8fe-52d53eac90e5" name="Default" comment="">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/_includes/themes/commonstyle/page.html" afterPath="$PROJECT_DIR$/_includes/themes/commonstyle/page.html" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/_includes/themes/commonstyle/post.html" afterPath="$PROJECT_DIR$/_includes/themes/commonstyle/post.html" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/js/main.js" afterPath="$PROJECT_DIR$/js/main.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/me.html" afterPath="$PROJECT_DIR$/me.html" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/shuo.html" afterPath="$PROJECT_DIR$/shuo.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.gitignore" afterPath="$PROJECT_DIR$/.gitignore" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
     </list>
     <ignored path="$PROJECT_DIR$/.tmp/" />
     <ignored path="$PROJECT_DIR$/temp/" />
@@ -47,11 +44,21 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="me.html" pinned="false" current-in-tab="true">
+      <file leaf-file-name="me.html" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/me.html">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="417">
               <caret line="208" column="34" lean-forward="true" selection-start-line="208" selection-start-column="34" selection-end-line="208" selection-end-column="34" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name=".gitignore" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/.gitignore">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="60">
+              <caret line="2" column="0" lean-forward="true" selection-start-line="2" selection-start-column="0" selection-end-line="2" selection-end-column="0" />
               <folding />
             </state>
           </provider>
@@ -112,6 +119,7 @@
         <option value="$PROJECT_DIR$/_includes/themes/commonstyle/post.html" />
         <option value="$PROJECT_DIR$/shuo.html" />
         <option value="$PROJECT_DIR$/me.html" />
+        <option value="$PROJECT_DIR$/.gitignore" />
       </list>
     </option>
   </component>
@@ -371,15 +379,15 @@
       <workItem from="1484228409162" duration="237000" />
       <workItem from="1484229288072" duration="752000" />
       <workItem from="1484231814777" duration="418000" />
-      <workItem from="1484276306185" duration="280000" />
+      <workItem from="1484276306185" duration="523000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="2664000" />
+    <option name="totallyTimeSpent" value="2907000" />
   </component>
   <component name="ToolWindowManager">
-    <frame x="390" y="25" width="1394" height="1056" extended-state="0" />
+    <frame x="390" y="25" width="1394" height="1056" extended-state="1" />
     <editor active="true" />
     <layout>
       <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.22060958" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
@@ -644,6 +652,14 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="417">
           <caret line="208" column="34" lean-forward="true" selection-start-line="208" selection-start-column="34" selection-end-line="208" selection-end-column="34" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/.gitignore">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="60">
+          <caret line="2" column="0" lean-forward="true" selection-start-line="2" selection-start-column="0" selection-end-line="2" selection-end-column="0" />
           <folding />
         </state>
       </provider>

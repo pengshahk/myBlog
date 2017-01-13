@@ -1,4 +1,8 @@
 $(document).ready(function(){
+    //-------------------------------导航栏提示框------------------------------//
+    var delay={"show": 800, "hide": 800};
+    var selector=$('.navbar-nav > li');
+    $('[data-toggle="tooltip"]').tooltip(delay,selector);
     //------------------------------实现博客标题的颜色渐变效果----------------------//
     $('div.cd-timeline-content > h2.title').on('mouseenter mouseleave',function(event){
         if (event.type == 'mouseenter') {

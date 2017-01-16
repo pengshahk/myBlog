@@ -20,16 +20,18 @@ $(document).ready(function(){
         });
     }*/
 
-$('.content_body').on('mouseenter',function(){
-        $(this).children(".time").hide();
-        $(this).children(".content").fadeIn('slow');
-  });
+    $('.content_body').on('mouseenter',function(){
+        $(this).children(".time").stop().hide();
+        $(this).children(".content").stop().fadeIn('slow');
+        $(this).parent().stop().addClass('swing');
 
-        $('.content_body').on('mouseleave',function(){
-            $(this).children(".content").stop().hide();
-            $(this).children(".time").stop().show();
+    });
 
-        });
+    $('.content_body').on('mouseleave',function(){
+        $(this).children(".content").stop().hide();
+        $(this).children(".time").stop().show();
+        $(this).parent().stop().removeClass('swing');
+    });
 
 
 });

@@ -1,0 +1,264 @@
+body {
+  font-family: "Microsoft YaHei", STXihei, sans-serif;
+}
+.reveal .slides .portrait {
+  width: 350px;
+  height: 350px;
+  border-radius: 50%;
+  border: 5px solid lightgray;
+  position: relative;
+  right: 20%;
+}
+.reveal .slides .basic_information {
+  font-family: "Microsoft YaHei", STXihei, sans-serif;
+  position: absolute;
+  right: 100px;
+  top: 40px;
+  color: #777;
+  font-size: 20px;
+  list-style: none;
+}
+.reveal .slides .basic_information .about {
+  list-style: none;
+}
+.reveal .slides .basic_information .about > li {
+  margin-bottom: 20px;
+}
+.reveal .slides .basic_information .about > li:nth-child(3) {
+  margin-bottom: 100px;
+}
+.reveal .slides .basic_information .card {
+  font-size: 30px;
+  margin-top: 35px;
+  margin-bottom: 25px;
+}
+.reveal .slides .basic_information .school {
+  list-style: none;
+  padding-left: 4em;
+}
+.reveal .slides .basic_information .university {
+  position: absolute;
+  top: 180px;
+}
+.reveal .slides .basic_information .graduate_student {
+  position: absolute;
+  top: 220px;
+}
+.reveal .slides .basic_information a {
+  text-decoration: none;
+  color: #777;
+  padding: 0;
+  margin: 0;
+  vertical-align: baseline;
+  display: inline-block;
+}
+.reveal .slides .basic_information a:hover,
+.reveal .slides .basic_information a :active {
+  color: hotpink;
+}
+.reveal .slides .basic_information a .flag {
+  width: 30px;
+  height: 30px;
+  border: none;
+  padding: 0;
+  margin: 0;
+  vertical-align: 40px;
+}
+.reveal .slides .basic_information a .text {
+  display: inline-block;
+  vertical-align: 50px;
+  margin-left: 8px;
+}
+.reveal .slides .major-header {
+  font-size: 30px;
+}
+.reveal .slides .major-header .rect {
+  width: 150px;
+  padding: 5px 0 5px 50px;
+  text-align: left;
+  background-color: #edf1f5;
+  color: #777;
+  display: inline-block;
+  border-top-left-radius: 3px;
+  border-bottom-left-radius: 3px;
+  position: absolute;
+  top: -90px;
+  left: 150px;
+}
+.reveal .slides .major-header #react1 {
+  width: 130px;
+}
+.reveal .slides .major-header .triangle:before {
+  content: "";
+  width: 0;
+  height: 0;
+  background: transparent;
+  border-top: 25px solid transparent;
+  border-bottom: 25px solid transparent;
+  border-left: 30px solid #dde4ec;
+  position: absolute;
+  left: 330px;
+  top: -90px;
+}
+.reveal .slides .skills {
+  position: absolute;
+  left: 50px;
+  color: #777;
+  font-size: 20px;
+  float: left;
+  margin-left: 150px;
+  text-align: right;
+}
+.reveal .slides .skills .skill {
+  display: block;
+  margin-bottom: 5px;
+}
+.reveal .slides .skills .skill .subject {
+  display: inline-block;
+}
+.reveal .slides .skills .skill .skill-progress {
+  margin-left: 50px;
+  display: inline-block;
+  width: 400px;
+  height: 10px;
+  border: 5px solid #eee;
+  border-radius: 15px;
+}
+.reveal .slides .skills .skill .progress-bar {
+  height: 10px;
+  border-top-left-radius: 15px;
+  border-bottom-left-radius: 15px;
+  background-color: #777;
+}
+.reveal .slides .skills .skill #p1 {
+  width: 300px;
+}
+.reveal .slides .skills .skill #p2 {
+  width: 250px;
+}
+.reveal .slides .skills .skill #p3 {
+  width: 200px;
+}
+.reveal .slides .skills .skill #p4 {
+  width: 250px;
+}
+.reveal .slides .skills .skill #p5 {
+  width: 280px;
+}
+.reveal .slides .skills .skill #p6 {
+  width: 100px;
+}
+.reveal .slides .skills .skill #p7 {
+  width: 150px;
+}
+.reveal .slides .skills .skill #p8 {
+  width: 180px;
+}
+.reveal .slides .project {
+  color: #777;
+}
+.reveal .slides .project .major-header {
+  position: absolute;
+  top: -50px;
+}
+.reveal .slides .project .major-header .rect {
+  padding: 5px 0 5px 30px;
+}
+.reveal .slides .project .project-content {
+  width: 500px;
+  margin-left: 300px;
+  margin-top: 50px;
+}
+.reveal .slides .project .project-content .name {
+  position: absolute;
+  top: 40px;
+  left: 330px;
+}
+.reveal .slides .project .project-content .name a {
+  color: #777;
+  font-size: 30px;
+  font-weight: bold;
+}
+.reveal .slides .project .project-content .name a:hover,
+.reveal .slides .project .project-content .name a:active {
+  text-decoration: none;
+  color: hotpink;
+}
+.reveal .slides .project .project-content .right {
+  font-size: 18px;
+  font-style: italic;
+  margin-bottom: 30px;
+  margin-left: 430px;
+}
+.reveal .slides .project .project-content .description {
+  font-size: 20px;
+  text-indent: 2em;
+  text-align: left;
+}
+.reveal .slides .project .project-content .description > a {
+  font-style: italic;
+  color: hotpink;
+}
+.reveal .slides .project .project-content .description > a:hover,
+.reveal .slides .project .project-content .description > a:active {
+  text-decoration: none;
+  color: #cf0068;
+}
+.reveal .slides .self-introduction {
+  width: 350px;
+  font-size: 25px;
+  text-align: left;
+  padding: 20px 40px;
+}
+@media (max-width: 1490px) and (min-width: 1200px) {
+  .reveal .slides .self-introduction {
+    width: auto;
+    height: auto;
+    padding: 10px 20px;
+  }
+}
+.reveal .slides .self-introduction p span {
+  font-size: 1.2em;
+}
+.reveal .slides .self-introduction ul {
+  margin-top: 10px;
+  list-style: none;
+  position: relative;
+  z-index: 1;
+}
+.reveal .slides .self-introduction ul > li {
+  display: inline-block;
+  padding-right: 40px;
+}
+.reveal .slides .self-introduction ul > li:first-child {
+  padding-left: 10px;
+}
+@media (max-width: 1490px) and (min-width: 1200px) {
+  .reveal .slides .self-introduction ul > li {
+    padding-right: 30px;
+  }
+  .reveal .slides .self-introduction ul > li:first-child {
+    padding-left: 15px;
+  }
+}
+.reveal .slides .self-introduction ul > li a {
+  text-decoration: none;
+}
+.reveal .slides .self-introduction ul > li a:hover .icon,
+.reveal .slides .self-introduction ul > li a:active .icon {
+  color: hotpink;
+}
+.reveal .slides .self-introduction ul > li .icon {
+  font-size: 1.5em;
+  color: #777;
+}
+.powered a {
+  position: absolute;
+  bottom: 20px;
+  cursor: pointer;
+  left: 20px;
+  z-index: 1;
+}
+.powered a:hover {
+  transform: scale(1.2);
+}

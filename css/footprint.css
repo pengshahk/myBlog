@@ -8471,24 +8471,10 @@ body {
   cursor: pointer;
   transition: transform 0.6s ease-in-out, left 0.6s ease-in-out, top 0.6s ease-in-out;
 }
-@media (max-width: 767px) {
-  .figure {
-    width: 160px;
-    height: 180px;
-    padding: 20px 20px 0 20px;
-  }
-  .figure .photo {
-    width: 120px;
-    height: 120px;
-  }
-  .figure .figure-caption h3 {
-    font-size: 16px;
-    margin-top: 15px;
-  }
-  .figure .description {
-    font-size: 12px;
-    padding: 10px;
-  }
+.figure.flipped {
+  transform-style: preserve-3d;
+  transform-origin: 0 50% 0;
+  transform: translate(320px) rotateY(180deg);
 }
 .figure-caption {
   text-align: center;
@@ -8527,9 +8513,9 @@ body {
 }
 @media (max-width: 767px) {
   .navs > li {
-    width: 15px;
-    height: 15px;
-    margin: 0 5px;
+    width: 10px;
+    height: 10px;
+    margin: 0 3px;
   }
 }
 .navs > li.click {

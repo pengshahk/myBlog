@@ -7444,6 +7444,7 @@ body {
   -ms-box-sizing: border-box;
   box-sizing: border-box;
   overflow-x: hidden;
+  position: fixed;
 }
 .shuo {
   font-family: Tahoma, Helvetica, Arial, "\5b8b\4f53", sans-serif;

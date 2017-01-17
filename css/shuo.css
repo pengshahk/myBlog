@@ -7466,12 +7466,12 @@ body {
   height: 300px;
   margin: 20px 0px 50px 60px;
 }
-@media (max-width: 1199px) and (min-width: 991px+1) {
+@media (max-width: 981px) and (min-width: 661px) {
   .shuo > li {
     margin-left: 15px;
   }
 }
-@media (max-width: 991px) {
+@media (max-width: 660px) {
   .shuo > li {
     margin-left: 0;
   }

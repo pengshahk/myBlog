@@ -7466,9 +7466,14 @@ body {
   height: 300px;
   margin: 20px 0px 50px 60px;
 }
+@media (max-width: 991px) and (min-width: 767px+1) {
+  .shuo > li {
+    margin-left: 15px;
+  }
+}
 @media (max-width: 767px) {
   .shuo > li {
-    margin-left: 18px;
+    margin-left: 0;
   }
 }
 .shuo > li .bg {

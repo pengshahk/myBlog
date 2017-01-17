@@ -8437,6 +8437,12 @@ footer[role="contentinfo"] ul.social > li > a:active {
 footer[role="contentinfo"] ul.social > li > span {
   color: hotpink;
 }
+html,
+body {
+  height: 100%;
+  width: 100%;
+  position: fixed;
+}
 body {
   background-color: #ededed;
   font-family: Tahoma, Helvetica, Arial, "\5b8b\4f53", sans-serif;

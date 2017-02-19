@@ -2,21 +2,8 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="23d11c83-19ae-4381-b8fe-52d53eac90e5" name="Default" comment="">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/assets/btn_l.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/assets/btn_r.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/assets/chunfen.jpg" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/assets/dongzhi.jpg" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/assets/lichun.jpg" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/assets/lidong.jpg" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/assets/liqiu.jpg" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/assets/lixia.jpg" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/assets/qingming.jpg" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/assets/qiufen.jpg" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/assets/xiazhi.jpg" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/css/carousel.css" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/js/carousel.min.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/_includes/themes/commonstyle/page.html" afterPath="$PROJECT_DIR$/_includes/themes/commonstyle/page.html" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/js/main.js" afterPath="$PROJECT_DIR$/js/main.js" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/css/footprint.css" afterPath="$PROJECT_DIR$/css/footprint.css" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/js/footprint.js" afterPath="$PROJECT_DIR$/js/footprint.js" />
     </list>
     <ignored path="$PROJECT_DIR$/.tmp/" />
     <ignored path="$PROJECT_DIR$/temp/" />
@@ -47,11 +34,31 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="page.html" pinned="false" current-in-tab="true">
+      <file leaf-file-name="page.html" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/_includes/themes/commonstyle/page.html">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="154">
               <caret line="206" column="43" lean-forward="false" selection-start-line="206" selection-start-column="43" selection-end-line="206" selection-end-column="43" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="footprint.css" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/css/footprint.css">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="240">
+              <caret line="8" column="7" lean-forward="true" selection-start-line="8" selection-start-column="7" selection-end-line="8" selection-end-column="7" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="footprint.js" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/js/footprint.js">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="184">
+              <caret line="25" column="42" lean-forward="false" selection-start-line="25" selection-start-column="42" selection-end-line="25" selection-end-column="42" />
               <folding />
             </state>
           </provider>
@@ -155,9 +162,9 @@
         <option value="$PROJECT_DIR$/less/shuocontent.less" />
         <option value="$PROJECT_DIR$/js/shuo.js" />
         <option value="$PROJECT_DIR$/photos.json" />
-        <option value="$PROJECT_DIR$/js/footprint.js" />
         <option value="$PROJECT_DIR$/js/main.js" />
         <option value="$PROJECT_DIR$/_includes/themes/commonstyle/page.html" />
+        <option value="$PROJECT_DIR$/js/footprint.js" />
       </list>
     </option>
   </component>
@@ -350,9 +357,9 @@
   </component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
+      <recent name="E:\Github\myBlog\css" />
       <recent name="E:\Github\myBlog\assets" />
       <recent name="E:\Github\myBlog\js" />
-      <recent name="E:\Github\myBlog\css" />
       <recent name="E:\Github\myBlog\less" />
       <recent name="E:\Github\myBlog" />
     </key>
@@ -444,7 +451,7 @@
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="15724000" />
+    <option name="totallyTimeSpent" value="16426000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="510" y="14" width="1394" height="1056" extended-state="0" />
@@ -819,20 +826,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/js/footprint.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="3960">
-          <caret line="132" column="16" lean-forward="true" selection-start-line="132" selection-start-column="16" selection-end-line="132" selection-end-column="16" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/css/footprint.css">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="150">
-          <caret line="5" column="7" lean-forward="false" selection-start-line="5" selection-start-column="7" selection-end-line="5" selection-end-column="7" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/css/shuo.css">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="90">
@@ -869,6 +862,22 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="154">
           <caret line="206" column="43" lean-forward="false" selection-start-line="206" selection-start-column="43" selection-end-line="206" selection-end-column="43" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/css/footprint.css">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="240">
+          <caret line="8" column="7" lean-forward="true" selection-start-line="8" selection-start-column="7" selection-end-line="8" selection-end-column="7" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/js/footprint.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="184">
+          <caret line="25" column="42" lean-forward="false" selection-start-line="25" selection-start-column="42" selection-end-line="25" selection-end-column="42" />
           <folding />
         </state>
       </provider>

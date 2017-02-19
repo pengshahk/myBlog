@@ -22,6 +22,8 @@ $(document).ready(function(){
           html+='</div>';
       });
       $('.stage').html(html);
+       var height=$('body').outerHeight()-$('header').outerHeight();
+       $('.stage').css({'height':height});
       stageW=$('.stage').outerWidth();
       stageH=$('.stage').outerHeight();
       halfStageW=Math.ceil(stageW/2);

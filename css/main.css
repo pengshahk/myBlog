@@ -7733,6 +7733,18 @@ body {
   float: right;
   margin-right: 60px;
 }
+@media (max-width: 991px) {
+  .sidebar-outline {
+    margin-top: 30px;
+    margin-bottom: 30px;
+    margin-right: 60px;
+  }
+}
+@media (max-width: 991px) {
+  #myCarousel {
+    margin-bottom: 60px;
+  }
+}
 .dropdown-menu {
   position: relative;
   float: none;

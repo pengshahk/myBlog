@@ -5,10 +5,10 @@ $(document).ready(function(){
     $('[data-toggle="tooltip"]').tooltip(delay,selector);
     //------------------------------实现轮播图--------------------//
     $('#myCarousel').myCarousel({
-        'width': 450,
-        'height': 180,
-        'centerWidth':350,
-        'centerHeight':180
+        'width': 400,
+        'height': 150,
+        'centerWidth':300,
+        'centerHeight':150
     });
     //------------------------------实现博客标题的颜色渐变效果----------------------//
     $('div.cd-timeline-content > h2.title').on('mouseenter mouseleave',function(event){
